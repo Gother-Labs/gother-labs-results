@@ -1,6 +1,6 @@
 {
   "schema_version": "open-results-catalog/v1",
-  "generated_at": "2026-05-01T10:40:52.080425+00:00",
+  "generated_at": "2026-05-01T19:14:30.534532+00:00",
   "results": [
     {
       "slug": "quadrature-rule-optimization",
@@ -8,7 +8,7 @@
       "domain": "Scientific Computing",
       "status": "published",
       "published_at": "2026-05-01",
-      "summary": "A one-dimensional numerical integration result where candidate quadrature rules are evaluated against analytic integrands and retained only when the measured objective improves.",
+      "summary": "A compact one-dimensional quadrature rule improved against a frozen analytic test suite. The public result separates the acceptance score from the interpretable numerical errors so the gain can be inspected, replayed, and challenged.",
       "metrics": {
         "seed": 688.676231,
         "best": 114.514813,
@@ -28,7 +28,12 @@
           "seed": "Seed objective",
           "best": "Best objective",
           "improvement": "Objective reduction"
-        }
+        },
+        "figure_captions": {
+          "assets/objective-curve.svg": "Best-so-far objective over the curated public trace. The acceptance score is lower-is-better and should be read as the contract used to retain candidates.",
+          "assets/candidate-trace.svg": "Accepted quadrature rule: node positions, normalized weights, and residual error by representative integrand."
+        },
+        "score_note": "The objective is the evaluation contract used by the run, not a universal measure of integration quality. The scientific interpretation comes from reading it together with the residual errors and the replayable candidate."
       },
       "path": "results/quadrature-rule-optimization/result.json"
     },

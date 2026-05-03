@@ -5,10 +5,10 @@
   "domain": "Scientific Computing",
   "status": "published",
   "published_at": "2026-05-01",
-  "summary": "A one-dimensional numerical integration result where candidate quadrature rules are evaluated against analytic integrands and retained only when the measured objective improves.",
-  "problem_statement": "Find a compact quadrature rule that reduces integration error across a fixed suite of analytic functions while keeping the rule inspectable and replayable.",
+  "summary": "A compact one-dimensional quadrature rule improved against a frozen analytic test suite. The public result separates the acceptance score from the interpretable numerical errors so the gain can be inspected, replayed, and challenged.",
+  "problem_statement": "Find a compact quadrature rule that reduces integration error across a fixed suite of analytic functions while keeping the rule inspectable, replayable, and stable under the unchanged evaluation contract.",
   "evaluation_contract": {
-    "summary": "Candidates are scored on a frozen analytic integrand suite using a single lower-is-better objective. Accepted candidates must improve the objective without changing the evaluation contract.",
+    "summary": "Candidates are scored on a frozen analytic integrand suite using a lower-is-better objective. The objective is the acceptance contract, while the report also exposes per-integrand errors as the more interpretable scientific readout.",
     "artifact": "artifacts/evaluation_contract.md"
   },
   "metrics": {
@@ -40,6 +40,11 @@
       "seed": "Seed objective",
       "best": "Best objective",
       "improvement": "Objective reduction"
-    }
+    },
+    "figure_captions": {
+      "assets/objective-curve.svg": "Best-so-far objective over the curated public trace. The acceptance score is lower-is-better and should be read as the contract used to retain candidates.",
+      "assets/candidate-trace.svg": "Accepted quadrature rule: node positions, normalized weights, and residual error by representative integrand."
+    },
+    "score_note": "The objective is the evaluation contract used by the run, not a universal measure of integration quality. The scientific interpretation comes from reading it together with the residual errors and the replayable candidate."
   }
 }
