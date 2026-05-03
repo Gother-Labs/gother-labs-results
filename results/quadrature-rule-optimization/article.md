@@ -1,10 +1,22 @@
 # Quadrature rule optimization
 
-## Problem
+## Abstract
 
-Numerical integration is the problem of estimating the area accumulated by a
-function over an interval. In this result the interval is deliberately simple:
-from 0 to 1. The exact quantity is an integral,
+This note reports a compact five-node quadrature rule for one-dimensional
+integrals on the unit interval. The rule is evaluated against a frozen suite of
+analytic integrands, and every reported improvement is measured under the same
+lower-is-better acceptance objective. The accepted candidate reduces the
+contracted objective from 688.676231 to 114.514813, while the largest public
+representative residual is reduced from 0.36338 to 0.001029.
+
+The result should be read as a bounded optimization artifact, not as a universal
+integration method. The purpose of the report is to make the problem, contract,
+candidate, metrics, and replay surface inspectable in one place.
+
+## 1. Problem formulation
+
+Let \(f_j\) denote an analytic test integrand on the unit interval. The exact
+quantity of interest is the integral
 
 $$
 I[f] = \int_0^1 f(x)\,dx.
@@ -12,8 +24,8 @@ $$
 
 {{visual:exact-integral}}
 
-A quadrature rule approximates that integral by evaluating the function at a
-small number of selected points and combining those samples with weights:
+A quadrature rule \(r\) approximates this quantity by evaluating the integrand at
+a finite set of nodes and combining those evaluations with normalized weights:
 
 $$
 Q_r[f] = \sum_{i=1}^{n} w_i f(x_i),
@@ -23,8 +35,8 @@ $$
 
 {{visual:quadrature-rule}}
 
-The residual error for an integrand is the gap between the analytic integral and
-the quadrature estimate:
+For each public integrand, the observable residual is the absolute difference
+between the quadrature estimate and the analytic reference value:
 
 $$
 e_j(r) = \left|Q_r[f_j] - I_j\right|.
@@ -32,105 +44,70 @@ $$
 
 {{visual:residual-error}}
 
-This is a useful open result for Göther because the problem is small enough to
-inspect, but it still has the properties we care about in larger technical
-systems: a bounded search space, a frozen evaluation contract, a replayable
-objective, and a final candidate that has to remain legible.
+The notation used throughout the report is summarized below.
 
-The task is to improve a compact one-dimensional quadrature rule for integrals
-on the unit interval against a fixed suite of analytic functions. The target is
-not to invent a universal integration method. The target is to show that an
-evaluation-driven loop can make a measured, replayable improvement without
-changing the problem after seeing candidates.
+{{visual:notation-table}}
 
-### Evaluation contract
+## 2. Evaluation contract
 
-Every candidate is scored by the same evaluation contract. For each public
-integrand \(f_j\), the evaluator compares the candidate estimate against the
-analytic integral \(I_j\). The run objective is a lower-is-better aggregate over
-those errors:
+The evaluation contract is fixed before candidate comparison. Each candidate
+rule is scored on the same public analytic integrand suite, with the same
+objective direction and the same aggregation rule. The run objective is
 
 $$
 J(r) = \sum_j \alpha_j \left| Q_r[f_j] - I_j \right|.
 $$
 
-This score is the acceptance contract. It is not meant to be the only value a
-reader should care about. In the report we therefore show both the contracted
-objective and the residual errors for representative integrands. The objective
-answers “was the candidate retained under the frozen rule?” The residual errors
-answer “what numerical behavior changed?”
+Lower values of \(J(r)\) are preferred. This objective is the acceptance score
+used to retain candidates during the run. It is not a general-purpose measure of
+integration quality, so the report also exposes residual errors for
+representative integrands.
 
-## Result
+## 3. Accepted candidate
 
-The seed rule started at an objective of 688.676231. The best retained
-candidate reached 114.514813, an 83.371749% reduction under the frozen
-acceptance contract. That percentage is not the headline scientific claim. The
-more interpretable readout is the residual error profile: the largest
-representative residual drops from 0.36338 in the seed to 0.001029 in the
-accepted five-node rule.
+The accepted rule keeps five nodes on \([0,1]\) with near-uniform normalized
+weights. The implementation starts from Gauss-Legendre nodes, applies a
+deterministic inward remapping with exponent \(\alpha=1.7\), maps the nodes back
+to the unit interval, and renormalizes the resulting rule.
 
-The accepted change keeps the implementation intentionally small. It starts
-from Gauss-Legendre nodes, applies a deterministic inward remapping, maps the
-nodes back to the unit interval, and renormalizes the rule:
+{{visual:accepted-rule-figure}}
 
-```python
-nodes, weights = np.polynomial.legendre.leggauss(n)
+{{visual:accepted-rule-table}}
 
-alpha = 1.7
-nodes = np.sign(nodes) * (np.abs(nodes) ** alpha)
+## 4. Results
 
-mapped_nodes = 0.5 * (nodes + 1.0)
-mapped_weights = 0.5 * weights
+The primary reported improvement is the reduction in the frozen acceptance
+objective. The result should be interpreted together with the residual readout,
+because the score answers whether the candidate was retained under the contract,
+while the residuals show the observable numerical behavior.
 
-rule = QuadratureRule(
-    nodes=list(mapped_nodes),
-    weights=list(mapped_weights),
-)
+{{visual:objective-summary-table}}
 
-return _renormalize(rule)
-```
+{{visual:residual-error-table}}
 
-The exponent \( \alpha = 1.7 \) compresses the Legendre nodes toward the
-midpoint before the rule is mapped from \([-1,1]\) to \([0,1]\). In this
-contract, that changed the error distribution enough to improve the retained
-objective while preserving a rule an engineer can read, replay, and compare.
+{{visual:objective-curve}}
 
-### What changed
+{{visual:candidate-trace}}
 
-The final candidate moves away from a degenerate seed toward a smooth,
-near-uniform weight distribution with endpoint-aware node placement. The public
-trace keeps a curated sequence of retained states so the improvement path can be
-inspected without exposing prompts, private run records, or uncurated proposal
-dumps.
+## 5. Limitations
 
-The most important distinction is that the trace can contain candidates that are
-interesting for the run history without being the final best candidate. The
-reported best objective is the best-so-far value under the frozen contract.
-That is the number that should be compared to the seed.
+This is a bounded benchmark on a fixed analytic integrand suite. It does not
+establish superiority for arbitrary integrands, discontinuous functions,
+high-dimensional integration, or production workloads with different stability
+requirements.
 
-### Limitations
+The contracted score is intentionally narrow. A lower objective is evidence that
+the accepted candidate improved under this contract, not evidence that every
+downstream quantity of interest improved.
 
-This is a bounded numerical benchmark, not a universal integration method. The
-result should be interpreted against the frozen integrand suite and evaluation
-contract included with this bundle. It does not prove superiority on arbitrary
-integrands, discontinuous functions, high-dimensional integrals, or production
-workloads with different stability requirements.
+## 6. Reproducibility
 
-The score is also intentionally narrow. A lower objective is evidence that the
-candidate improved under this contract, not a claim that every downstream
-quantity of interest improved. For a real client setting, the contract would
-include the operational metrics that matter for that system.
+The public bundle includes the accepted candidate, the evaluation contract,
+metrics, sanitized evolution trace, and provenance. Replaying the result should
+use the same analytic integrand suite, the same objective definition, and the
+same lower-is-better direction.
 
-## Reproducibility
-
-The bundle includes the accepted candidate, the evaluation contract, metrics, a
-sanitized evolution trace, and provenance. Replaying the result should use the
-same contract and objective direction: lower is better.
-
-The public source bundle lives in
+The source bundle is available in
 [Göther Labs Open Results](https://github.com/Gother-Labs/gother-labs-open-results/tree/main/results/quadrature-rule-optimization).
 
-The public artifact is designed to be reviewable in layers: start with the
-problem and contract, inspect the objective curve, inspect the accepted rule, and
-then read the candidate implementation. Nothing in the website should be treated
-as a substitute for the replayable artifacts.
+{{visual:implementation-code}}
