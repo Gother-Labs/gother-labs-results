@@ -34,6 +34,17 @@
     "order": 1,
     "card_label": "01 Scientific Computing",
     "card_summary": "A five-node integration rule is compared against a fixed baseline, with both the acceptance score and direct residual errors exposed.",
+    "card_visual": "quadrature",
+    "card_metrics": [
+      {
+        "label": "Accepted rule",
+        "value": "5 nodes"
+      },
+      {
+        "label": "Largest residual reduction",
+        "value": "99.72%"
+      }
+    ],
     "detail_path": "open-results/quadrature-rule-optimization/",
     "surface_path": "evolther/quadrature-run/",
     "display_labels": {
