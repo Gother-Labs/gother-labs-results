@@ -194,6 +194,10 @@ public contract and objective direction. `accepted_candidate.py` provides
 in [Figure 7](#fig-7) and [Table 3](#table-3) are read from the curated public
 trace.
 
+An animated replay of the same public trace is available at
+[the run page](./run/). It is a presentation layer over the same artifacts, not a
+separate result.
+
 Replaying the result should use the same analytic integrand suite, the same
 objective definition, the same run baseline, and the same lower-is-better
 direction. Changing any of those items creates a new evaluation, not a replay of
