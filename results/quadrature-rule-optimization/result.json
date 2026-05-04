@@ -5,7 +5,7 @@
   "domain": "Scientific Computing",
   "status": "published",
   "published_at": "2026-05-01",
-  "summary": "A compact one-dimensional quadrature rule improved against a frozen analytic test suite. The public result separates the acceptance score from the interpretable numerical errors so the gain can be inspected, replayed, and challenged.",
+  "summary": "A compact five-node rule for estimating one-dimensional integrals, improved against a fixed public test suite. The report separates the acceptance score from direct residual errors so the gain can be inspected, replayed, and challenged.",
   "problem_statement": "Find a compact quadrature rule that reduces integration error across a fixed suite of analytic functions while keeping the rule inspectable, replayable, and stable under the unchanged evaluation contract.",
   "evaluation_contract": {
     "summary": "Candidates are scored on a frozen analytic integrand suite using a lower-is-better objective. The objective is the acceptance contract, while the report also exposes per-integrand errors as the more interpretable scientific readout.",
@@ -33,7 +33,7 @@
   "website": {
     "order": 1,
     "card_label": "01 Scientific Computing",
-    "card_summary": "Candidate quadrature rules are evaluated against analytic integrands and retained only when the measured objective improves.",
+    "card_summary": "A five-node integration rule is compared against a fixed baseline, with both the acceptance score and direct residual errors exposed.",
     "detail_path": "open-results/quadrature-rule-optimization/",
     "surface_path": "evolther/quadrature-run/",
     "display_labels": {
