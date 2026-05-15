@@ -1,0 +1,78 @@
+{
+  "schema_version": "open-result/v1",
+  "slug": "rcpsp-psplib-j30",
+  "title": "PSPLIB J30 scheduling benchmark",
+  "domain": "Operational Planning",
+  "status": "published",
+  "published_at": "2026-05-12",
+  "summary": "A deterministic resource-constrained project scheduling rule improved across a frozen PSPLIB J30 subset with proven optimal makespans. The public chain reduced the lower-is-better score from 14.312 to 12.087 while keeping feasibility at 100%.",
+  "problem_statement": "Find a deterministic activity-priority rule for serial schedule generation that reduces makespan gap against proven PSPLIB J30 optima while preserving precedence and renewable-resource feasibility.",
+  "evaluation_contract": {
+    "summary": "Candidates are scored on 80 frozen PSPLIB J30 single-mode RCPSP instances. Every evaluated instance has a proven optimal makespan, and schedules must satisfy precedence constraints, renewable-resource capacities, finite priority scores, and deterministic eligible-activity selection.",
+    "artifact": "artifacts/evaluation_contract.md"
+  },
+  "metrics": {
+    "seed": 14.312164873860446,
+    "best": 12.086633114086395,
+    "improvement": 2.225531759774052,
+    "improvement_pct": 15.549930981012764,
+    "units": "score",
+    "direction": "lower_is_better",
+    "validation_status": "curated-surface",
+    "mean_gap_pct": 6.037902271174518,
+    "p95_gap_pct": 17.282088122605362,
+    "max_gap_pct": 22.413793103448278,
+    "optimal_hit_rate": 0.2375,
+    "valid_rate": 1,
+    "instances_evaluated": 80,
+    "feasibility_penalty": 0,
+    "invalid_priority_count": 0
+  },
+  "artifacts": {
+    "candidate_code": "artifacts/accepted_candidate.py",
+    "evolution_trace": "artifacts/evolution.json",
+    "metrics": "artifacts/metrics.json",
+    "provenance": "artifacts/provenance.json",
+    "replay": "artifacts/replay.json",
+    "plots": [
+      "assets/objective-curve.svg",
+      "assets/benchmark-comparison.svg",
+      "assets/gap-readout.svg",
+      "assets/tail-gap-ladder.svg",
+      "assets/schedule-network.svg",
+      "assets/resource-load.svg"
+    ]
+  },
+  "website": {
+    "order": 3,
+    "card_label": "03 Operational Planning",
+    "card_summary": "A scheduling dispatch rule is evaluated against PSPLIB J30 optima, reducing the governed score while preserving feasibility.",
+    "card_visual": "rcpsp",
+    "card_metrics": [
+      {
+        "label": "Score movement",
+        "value": "14.312 -> 12.087"
+      },
+      {
+        "label": "Validated schedules",
+        "value": "80 / 80"
+      }
+    ],
+    "detail_path": "open-results/rcpsp-psplib-j30/",
+    "surface_path": "evolther/rcpsp-psplib-j30-run/",
+    "display_labels": {
+      "seed": "Seed score",
+      "best": "Accepted score",
+      "improvement": "Score reduction"
+    },
+    "figure_captions": {
+      "assets/objective-curve.svg": "Best-so-far objective curve in the same paper style as the quadrature result. Lower is better; the public comparison moves from 14.312 to 12.087.",
+      "assets/benchmark-comparison.svg": "Baseline versus accepted comparison across score, mean gap, p95 gap, valid schedules, and exact proven optima reached.",
+      "assets/gap-readout.svg": "Accepted candidate diagnostics on the frozen 80-instance portfolio: mean gap, p95 gap, max gap, and exact proven optima reached.",
+      "assets/tail-gap-ladder.svg": "Worst-instance tail behavior for the accepted candidate, showing residual gap and makespan versus proven optimum.",
+      "assets/schedule-network.svg": "RCPSP schedule readout: precedence network, Gantt placement, and makespan.",
+      "assets/resource-load.svg": "Renewable-resource load profile for a feasible schedule, with the capacity line kept visible."
+    },
+    "score_note": "The score is the frozen evaluation contract for this public PSPLIB J30 subset. It is not a runtime benchmark and it is not a claim over all RCPSP instances."
+  }
+}
