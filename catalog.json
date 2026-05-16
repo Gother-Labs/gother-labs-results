@@ -1,6 +1,6 @@
 {
   "schema_version": "open-results-catalog/v1",
-  "generated_at": "2026-05-15T18:17:25.180202+00:00",
+  "generated_at": "2026-05-16T08:38:34.815552+00:00",
   "results": [
     {
       "slug": "quadrature-rule-optimization",
@@ -130,6 +130,7 @@
           "assets/objective-curve.svg": "Best-so-far objective curve in the same paper style as the quadrature result. Lower is better; the public comparison moves from 14.312 to 12.087.",
           "assets/benchmark-comparison.svg": "Baseline versus accepted comparison across score, mean gap, p95 gap, valid schedules, and exact proven optima reached.",
           "assets/gap-readout.svg": "Accepted candidate diagnostics on the frozen 80-instance portfolio: mean gap, p95 gap, max gap, and exact proven optima reached.",
+          "artifacts/schedule-example.json": "Sanitized real schedule readout for PSPLIB J30 instance j3025_9: selected shifted jobs, makespans, capacities, and resource-load buckets.",
           "assets/tail-gap-ladder.svg": "Worst-instance tail behavior for the accepted candidate, showing residual gap and makespan versus proven optimum.",
           "assets/schedule-network.svg": "RCPSP schedule readout: precedence network, Gantt placement, and makespan.",
           "assets/resource-load.svg": "Renewable-resource load profile for a feasible schedule, with the capacity line kept visible."

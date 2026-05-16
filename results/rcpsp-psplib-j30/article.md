@@ -62,6 +62,8 @@ The public chain moved from the seed score of 14.312 to an accepted score of 12.
 
 {{visual:schedule-compression}}
 
+Figure 5 is a full-job readout from the real portfolio instance `j3025_9`, not a schematic schedule. The instance has 32 jobs, including the dummy source and sink; the figure renders all 30 executable jobs as unlabeled bars so the compression pattern remains legible. The resource-load buckets come from the same full instance. On this instance, the seed schedule finished at 112, the accepted schedule finished at 90, and the proven optimum is 84.
+
 {{visual:objective-summary-table}}
 
 The accepted candidate evaluated 80/80 instances with a zero feasibility penalty. Its mean gap was 6.04%, p95 gap was 17.28%, max gap was 22.41%, and it reached the exact proven optimum on 19 of 80 instances. In absolute benchmark terms, the accepted schedules are therefore not a 99% approximation claim: the mean makespan is about 106.04% of the proven optimum, or roughly 94.31% if expressed as optimum divided by candidate makespan.
