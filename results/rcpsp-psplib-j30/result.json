@@ -46,8 +46,8 @@
     "score_trace": "artifacts/score-trace.json"
   },
   "website": {
-    "order": 3,
-    "card_label": "03 Operational Planning",
+    "order": 2,
+    "card_label": "02 Operational Planning",
     "card_summary": "A scheduling dispatch rule is evaluated against PSPLIB J30 optima, reducing the governed score while preserving feasibility.",
     "card_visual": "rcpsp",
     "card_metrics": [

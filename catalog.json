@@ -1,6 +1,6 @@
 {
   "schema_version": "open-results-catalog/v1",
-  "generated_at": "2026-05-16T11:33:20.104165+00:00",
+  "generated_at": "2026-05-16T12:26:22.442305+00:00",
   "results": [
     {
       "slug": "quadrature-rule-optimization",
@@ -49,38 +49,6 @@
       "path": "results/quadrature-rule-optimization/result.json"
     },
     {
-      "slug": "storage-arbitrage-policy",
-      "title": "Storage arbitrage policy",
-      "domain": "Energy & Renewables",
-      "status": "published",
-      "published_at": "2026-05-01",
-      "summary": "A battery dispatch policy evolved against frozen OMIE day-ahead prices, showing objective improvement while preserving auditable operating behavior.",
-      "metrics": {
-        "seed": 73.4941,
-        "best": 24.856175,
-        "improvement": 48.637926,
-        "improvement_pct": 66.179361,
-        "units": "objective",
-        "direction": "lower_is_better",
-        "validation_status": "curated-surface",
-        "oracle_capture_ratio": 0.926417,
-        "regret_mean_eur": 14.680167
-      },
-      "website": {
-        "order": 2,
-        "card_label": "02 Energy & Renewables",
-        "card_summary": "A battery dispatch policy is evaluated across fixed price scenarios and retained only when the governed objective improves.",
-        "detail_path": "open-results/storage-arbitrage-policy/",
-        "surface_path": "evolther/storage-arbitrage-run/",
-        "display_labels": {
-          "seed": "Seed objective",
-          "best": "Best objective",
-          "improvement": "Objective reduction"
-        }
-      },
-      "path": "results/storage-arbitrage-policy/result.json"
-    },
-    {
       "slug": "rcpsp-psplib-j30",
       "title": "PSPLIB J30 scheduling benchmark",
       "domain": "Operational Planning",
@@ -105,8 +73,8 @@
         "invalid_priority_count": 0
       },
       "website": {
-        "order": 3,
-        "card_label": "03 Operational Planning",
+        "order": 2,
+        "card_label": "02 Operational Planning",
         "card_summary": "A scheduling dispatch rule is evaluated against PSPLIB J30 optima, reducing the governed score while preserving feasibility.",
         "card_visual": "rcpsp",
         "card_metrics": [
