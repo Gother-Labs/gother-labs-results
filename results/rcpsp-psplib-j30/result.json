@@ -42,7 +42,8 @@
       "assets/tail-gap-ladder.svg",
       "assets/schedule-network.svg",
       "assets/resource-load.svg"
-    ]
+    ],
+    "score_trace": "artifacts/score-trace.json"
   },
   "website": {
     "order": 3,

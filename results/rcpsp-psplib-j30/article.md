@@ -54,7 +54,7 @@ This is intentionally inspectable. The candidate is not a solver replacement or 
 
 ## 4. Results
 
-The public chain moved from the seed score of 14.312 to an accepted score of 12.087. The absolute score reduction is 2.226 points, or 15.55%.
+The public chain moved from the seed score of 14.312 to an accepted score of 12.087. Figure 3 shows the full scored-candidate trace; Figure 4 summarizes the reported seed-versus-accepted comparison.
 
 {{visual:objective-curve}}
 
@@ -62,19 +62,17 @@ The public chain moved from the seed score of 14.312 to an accepted score of 12.
 
 {{visual:schedule-compression}}
 
-Figure 5 is a full-job readout from the real portfolio instance `j3025_9`, not a schematic schedule. The instance has 32 jobs, including the dummy source and sink; the figure renders all 30 executable jobs as unlabeled bars so the compression pattern remains legible. The resource-load buckets come from the same full instance. On this instance, the seed schedule finished at 112, the accepted schedule finished at 90, and the proven optimum is 84.
+Figure 5 translates the aggregate result into one real portfolio instance, `j3025_9`. Unlike the introductory schematic, it uses all executable jobs from the instance and the same instance's renewable-resource load buckets.
 
 {{visual:objective-summary-table}}
 
-The accepted candidate evaluated 80/80 instances with a zero feasibility penalty. Its mean gap was 6.04%, p95 gap was 17.28%, max gap was 22.41%, and it reached the exact proven optimum on 19 of 80 instances. In absolute benchmark terms, the accepted schedules are therefore not a 99% approximation claim: the mean makespan is about 106.04% of the proven optimum, or roughly 94.31% if expressed as optimum divided by candidate makespan.
+Figure 6 keeps the accepted-candidate diagnostics separate from the chain objective. In absolute benchmark terms, this is not a 99% approximation claim: the mean accepted makespan is about 106.04% of the proven optimum, or roughly 94.31% if expressed as optimum divided by candidate makespan.
 
 {{visual:gap-summary}}
 
-The worst residual gaps remain visible because they matter operationally. The largest gap in the accepted readout is instance `j3025_10`, where the candidate makespan is 71 against the proven optimum 58, a 22.41% gap. Exposing that tail behavior is part of the result, not an appendix.
+The worst residual gaps remain visible because they matter operationally. Figure 7 is the tail readout: it shows the largest accepted-candidate residual gaps and their makespan-versus-optimum comparison.
 
 {{visual:tail-ladder}}
-
-{{visual:worst-table}}
 
 ## 5. Limitations
 
@@ -84,8 +82,6 @@ The accepted rule is deterministic and feasible under this evaluator, but it is 
 
 ## 6. Reproducibility
 
-The bundle includes the accepted candidate, evaluation contract, curated evolution chain, metrics, provenance, replay confirmation, and public figures. The run page is a presentation layer over the same curated artifacts. It excludes prompts, raw logs, telemetry, and non-public proposal context.
-
-A curated animated replay of the same public trace is available at [the run page](./run/). It is a presentation layer over the same artifacts, not a separate result.
+The bundle includes the accepted candidate, evaluation contract, curated evolution chain, metrics, provenance, replay confirmation, and public figures. A curated animated replay of the same public trace is available at [the run page](./run/). It is a presentation layer over the same artifacts, not a separate result, and excludes prompts, raw logs, telemetry, and non-public proposal context.
 
 Replaying the result should use the same PSPLIB J30 portfolio, the same proven optimal makespans, the same score formula, and the same lower-is-better direction. Changing the instance set or objective creates a new evaluation, not a replay of this result.
