@@ -52,12 +52,12 @@
     "card_visual": "rcpsp",
     "card_metrics": [
       {
-        "label": "Score movement",
-        "value": "14.312 -> 12.087"
+        "label": "Mean gap to optimum",
+        "value": "6.04%"
       },
       {
-        "label": "Validated schedules",
-        "value": "80 / 80"
+        "label": "Real schedule cut",
+        "value": "20% shorter"
       }
     ],
     "detail_path": "open-results/rcpsp-psplib-j30/",

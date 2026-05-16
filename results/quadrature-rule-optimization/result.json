@@ -37,12 +37,12 @@
     "card_visual": "quadrature",
     "card_metrics": [
       {
-        "label": "Accepted rule",
-        "value": "5 nodes"
+        "label": "Acceptance objective",
+        "value": "688.68 -> 114.51"
       },
       {
-        "label": "Largest residual reduction",
-        "value": "99.72%"
+        "label": "Largest residual",
+        "value": "99.72% lower"
       }
     ],
     "detail_path": "open-results/quadrature-rule-optimization/",
