@@ -194,4 +194,4 @@ direction. Changing any of those items creates a new evaluation, not a replay of
 this result.
 
 The source bundle is available in
-[Göther Labs results repository](https://github.com/Gother-Labs/gother-labs-open-results/tree/main/results/quadrature-rule-optimization).
+[Göther Labs results repository](https://github.com/Gother-Labs/gother-labs-results/tree/main/results/quadrature-rule-optimization).

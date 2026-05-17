@@ -1,4 +1,4 @@
-# Göther Labs Open Results
+# Göther Labs Results
 
 This repository is the public editorial and technical source for Göther Labs
 open results.
