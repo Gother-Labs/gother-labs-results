@@ -17,9 +17,8 @@ intermediate material.
 
 The website consumes this repository through `catalog.json`.
 
-The current schema identifiers retain the historical `open-result/v1` naming for
-compatibility with already published bundles. New documentation, tooling, and
-website routes use “results”.
+Schema identifiers, documentation, tooling, and website routes use “results”
+consistently.
 
 ```bash
 python3 tools/validate_result.py results/quadrature-rule-optimization

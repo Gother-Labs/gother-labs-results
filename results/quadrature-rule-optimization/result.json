@@ -1,5 +1,5 @@
 {
-  "schema_version": "open-result/v1",
+  "schema_version": "result/v1",
   "slug": "quadrature-rule-optimization",
   "title": "Quadrature rule optimization",
   "domain": "Scientific Computing",

@@ -104,7 +104,7 @@ def validate_result(result_dir: Path) -> None:
     missing = [key for key in required if key not in result]
     if missing:
         raise SystemExit(f"result.json missing required keys: {missing}")
-    if result["schema_version"] != "open-result/v1":
+    if result["schema_version"] != "result/v1":
         raise SystemExit("Unsupported schema_version")
     if result["slug"] != result_dir.name:
         raise SystemExit(f"Slug {result['slug']} does not match directory {result_dir.name}")
