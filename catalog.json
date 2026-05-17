@@ -1,6 +1,6 @@
 {
   "schema_version": "open-results-catalog/v1",
-  "generated_at": "2026-05-17T12:12:37.389775+00:00",
+  "generated_at": "2026-05-17T13:01:23.955994+00:00",
   "results": [
     {
       "slug": "quadrature-rule-optimization",
@@ -34,7 +34,6 @@
           }
         ],
         "detail_path": "results/quadrature-rule-optimization/",
-        "surface_path": "evolther/quadrature-run/",
         "display_labels": {
           "seed": "Seed objective",
           "best": "Best objective",
@@ -88,7 +87,6 @@
           }
         ],
         "detail_path": "results/rcpsp-psplib-j30/",
-        "surface_path": "evolther/rcpsp-psplib-j30-run/",
         "display_labels": {
           "seed": "Seed score",
           "best": "Accepted score",

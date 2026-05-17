@@ -61,7 +61,6 @@
       }
     ],
     "detail_path": "results/rcpsp-psplib-j30/",
-    "surface_path": "evolther/rcpsp-psplib-j30-run/",
     "display_labels": {
       "seed": "Seed score",
       "best": "Accepted score",
