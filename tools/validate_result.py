@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate an Open Result bundle before it is consumed by the website."""
+"""Validate a public result bundle before it is consumed by the website."""
 
 from __future__ import annotations
 

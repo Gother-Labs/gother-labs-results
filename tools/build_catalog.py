@@ -57,7 +57,7 @@ def main() -> None:
         )
     entries.sort(key=lambda item: (item["website"].get("order", 999), item["slug"]))
     catalog = {
-        "schema_version": "open-results-catalog/v1",
+        "schema_version": "results-catalog/v1",
         "generated_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "results": entries,
     }
