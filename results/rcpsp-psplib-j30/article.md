@@ -85,3 +85,6 @@ The accepted rule is deterministic and feasible under this evaluator, but it is 
 The bundle includes the accepted candidate, evaluation contract, curated evolution chain, metrics, provenance, replay confirmation, and public figures. A curated animated replay of the same public trace is available at [the run page](./run/). It is a presentation layer over the same artifacts, not a separate result, and excludes prompts, raw logs, telemetry, and non-public proposal context.
 
 Replaying the result should use the same PSPLIB J30 portfolio, the same proven optimal makespans, the same score formula, and the same lower-is-better direction. Changing the instance set or objective creates a new evaluation, not a replay of this result.
+
+The source bundle is available in
+[Göther Labs results repository](https://github.com/Gother-Labs/gother-labs-results/tree/main/results/rcpsp-psplib-j30).
