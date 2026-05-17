@@ -1,40 +1,197 @@
 # Quadrature rule optimization
 
-## Problem
+## Abstract
 
-Numerical integration is useful only when the rule is stable enough to trust and
-small enough to inspect. This result asks whether an evaluation-driven loop can
-improve a compact one-dimensional quadrature rule against a frozen suite of
-analytic integrands.
+This note reports a compact five-node rule for estimating one-dimensional
+integrals on the unit interval. Relative to the fixed public baseline, the
+accepted rule reduces the frozen lower-is-better acceptance score by 83.37%.
+On the most improved public residual component, the direct numerical error falls
+from 0.3634 to 0.0010, a 99.72% reduction.
 
-## Evaluation
+The public claim is bounded to the stated one-dimensional analytic test
+contract. The acceptance score is the retention objective used by the run; the
+residual errors are the direct numerical readout. Both surfaces are shown so the
+candidate can be audited without presenting the rule as a universal integration
+method.
 
-Every candidate is scored by the same evaluation contract. The objective is
-lower-is-better and combines integration error across the public integrand
-suite. A candidate is accepted only when it improves the measured objective
-under that unchanged contract.
+## 1. Problem formulation
 
-## Result
+Numerical integration estimates the area accumulated under a function. The
+conceptual object is an integral of an arbitrary scalar function \(g\) on the
+unit interval:
 
-The seed objective was 688.676231. The accepted result reached
-114.514813, a reduction of 574.161418
-objective units (83.371749%).
+$$
+I[g] = \int_{0}^{1} g(x)\,dx.
+$$
 
-## What changed
+{{visual:exact-integral}}
 
-The accepted rule changes the placement and weighting of the quadrature nodes.
-The public trace keeps the curated sequence of accepted states so the improvement
-can be inspected without exposing non-public proposal context or uncurated
-intermediate material.
+The exact area is rarely the object a production system computes directly.
+Instead, a quadrature rule \(r\) replaces the continuous integral with a finite
+set of weighted point evaluations. The nodes \(x_i\) determine where the
+function is sampled and the normalized weights \(w_i\) determine how much each
+sample contributes:
 
-## Limitations
+$$
+Q_r[g] = \sum_{i=1}^{n} w_i\,g(x_i),
+\qquad
+x_i \in [0,1],
+\qquad
+\sum_{i=1}^{n} w_i = 1.
+$$
 
-This is a bounded numerical benchmark, not a universal integration method. The
-result should be interpreted against the frozen integrand suite and evaluation
-contract included with this bundle.
+{{visual:quadrature-rule}}
 
-## Reproducibility
+The residual is the direct error a reader can interpret without knowing the
+optimization machinery. It compares the analytic integral with the quadrature
+estimate. The visual residual can have regions where the rule overestimates and
+regions where it underestimates; the reported scalar residual is the absolute
+value of the net difference:
 
-The bundle includes the accepted candidate, the evaluation contract, metrics, a
-sanitized evolution trace, and provenance. Replaying the result should use the
-same contract and objective direction: lower is better.
+$$
+e(r;g) = \left|Q_r[g] - I[g]\right|.
+$$
+
+{{visual:residual-error}}
+
+[Figures 1](#fig-1)-[3](#fig-3) introduce the objects used by the report. They
+are deliberately conceptual: the actual acceptance contract below uses a fixed
+public suite of three analytic functions, not the illustrative function \(g\).
+
+## 2. Evaluation contract
+
+The evaluation contract is what makes the comparison fair. It is fixed before
+candidate comparison, so the accepted rule cannot change the test after seeing
+the result. Each candidate rule is scored on the same public analytic integrand
+suite:
+
+$$
+\begin{aligned}
+f_1(x) &= \sin(\pi x),\\
+f_2(x) &= \sqrt{x},\\
+f_3(x) &= \log(1+x).
+\end{aligned}
+$$
+
+For each function \(f_j\), the evaluator computes the residual by specializing
+[Equation (3)](#eq-3) to the contract integrand:
+
+$$
+e_j(r) =
+\left|Q_r[f_j] - I[f_j]\right|.
+$$
+
+The run objective \(J(r)\) is the acceptance score used during the run. It is a
+lower-is-better aggregate of the public residual components:
+
+$$
+J(r) = \sum_{j=1}^{3} \alpha_j\,e_j(r).
+$$
+
+{{visual:contract-table}}
+
+The public bundle identifies the integrand suite and objective direction, but it
+does not expose numeric component weights \(\alpha_j\). [Table 1](#table-1)
+therefore fixes the public residual components without inventing unpublished
+objective weights or mixing in accepted-candidate outcomes. In plain terms: the
+table shows what was tested and where the baseline started; it does not ask the
+reader to trust an unpublished weighting scheme.
+
+### Run baseline
+
+The run baseline \(r_0\) is the first public rule in the curated trace. It fixes
+the comparison point before candidate selection. Every improvement reported
+later is measured relative to this same baseline.
+
+{{visual:baseline-rule-figure}}
+
+All objective and residual improvements reported below are measured against this
+same run baseline, whose contracted objective is \(J(r_0)=688.676231\).
+
+## 3. Accepted candidate
+
+The accepted candidate is the five-node rule shown in [Figure 5](#fig-5). This
+is the object being reported: five sample locations and five normalized weights.
+The figure is the primary definition of the node placement and weights; it
+should be read against the run baseline in [Figure 4](#fig-4) before
+interpreting the objective change.
+
+{{visual:accepted-rule-figure}}
+
+### Candidate construction
+
+The candidate is intentionally small enough to audit. The implementation maps
+source nodes \(\xi_i\) on \([-1,1]\) inward with a fixed remapping exponent
+\(p=1.7\), maps them back to the unit interval, and renormalizes the weights:
+
+$$
+\tilde{\xi}_i=\operatorname{sign}(\xi_i)\,|\xi_i|^p,
+\qquad
+x_i=\frac{\tilde{\xi}_i+1}{2},
+\qquad
+p=1.7.
+$$
+
+The accepted implementation is included here because it is part of the candidate
+definition, not only a replay appendix. The code is short enough for a reader to
+verify that the reported rule is generated by the stated transformation.
+
+{{visual:implementation-code}}
+
+### Candidate results
+
+The result is read in two layers. [Figure 6](#fig-6) and [Table 2](#table-2)
+show the governed acceptance objective; [Figure 7](#fig-7) and
+[Table 3](#table-3) show where the accepted rule leaves residual error on the
+public functions.
+
+{{visual:objective-curve}}
+
+{{visual:objective-summary-table}}
+
+The residual readout is the numerical check on the objective score. The accepted
+candidate does not erase every residual; it materially reduces the measured
+behavior under this contract.
+
+{{visual:residual-location-figure}}
+
+{{visual:residual-error-table}}
+
+## 4. Limitations
+
+This is a bounded benchmark on a fixed one-dimensional analytic suite. The
+result says that this accepted five-node rule improved this contract. It does
+not establish superiority for arbitrary integrands, discontinuous functions,
+oscillatory functions outside the public suite, endpoint singularities not
+represented by the contract, multidimensional integration, or production
+workloads with different stability requirements.
+
+The contracted score is intentionally narrow. A lower value of \(J(r)\) is
+evidence that the accepted candidate improved under this contract, not evidence
+that every downstream quantity of interest improved. Because the public bundle
+does not expose numeric component weights \(\alpha_j\), readers should interpret
+the residual table as the transparent scientific readout alongside the aggregate
+score.
+
+External validity is deliberately left open. A reader should rerun an evaluation
+contract that explicitly contains the cases they care about before transferring
+the node placement to another integration setting.
+
+## 5. Reproducibility
+
+The public bundle includes the evaluation contract, accepted candidate, curated
+evolution trace, metrics, provenance, residual readout, and replay surface. The
+article uses those artifacts as the source for the figures, tables, and
+accepted implementation.
+
+An animated replay of the same public trace is available at
+[the run page](./run/). It is a presentation layer over the same artifacts, not a
+separate result, and excludes non-public proposal context.
+
+Replaying the result should use the same analytic integrand suite, the same
+objective definition, the same run baseline, and the same lower-is-better
+direction. Changing any of those items creates a new evaluation, not a replay of
+this result.
+
+The source bundle is available in
+[Göther Labs Open Results](https://github.com/Gother-Labs/gother-labs-open-results/tree/main/results/quadrature-rule-optimization).
