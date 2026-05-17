@@ -1,11 +1,11 @@
 # Göther Labs Results
 
 This repository is the public editorial and technical source for Göther Labs
-open results.
+results.
 
 Each result lives in `results/<slug>/` and contains:
 
-- `result.json`: structured metadata validated against `schemas/open-result.schema.json`
+- `result.json`: structured metadata validated against the public result schema
 - `article.md`: editable technical note
 - `artifacts/`: sanitized public artifacts
 - `assets/`: public figures used by the website
@@ -16,6 +16,10 @@ context, operational run records, sensitive configuration, or uncurated
 intermediate material.
 
 The website consumes this repository through `catalog.json`.
+
+The current schema identifiers retain the historical `open-result/v1` naming for
+compatibility with already published bundles. New documentation, tooling, and
+website routes use “results”.
 
 ```bash
 python3 tools/validate_result.py results/quadrature-rule-optimization
