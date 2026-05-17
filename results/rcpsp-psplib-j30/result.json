@@ -60,7 +60,7 @@
         "value": "20% shorter"
       }
     ],
-    "detail_path": "open-results/rcpsp-psplib-j30/",
+    "detail_path": "results/rcpsp-psplib-j30/",
     "surface_path": "evolther/rcpsp-psplib-j30-run/",
     "display_labels": {
       "seed": "Seed score",

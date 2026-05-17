@@ -45,7 +45,7 @@
         "value": "99.72% lower"
       }
     ],
-    "detail_path": "open-results/quadrature-rule-optimization/",
+    "detail_path": "results/quadrature-rule-optimization/",
     "surface_path": "evolther/quadrature-run/",
     "display_labels": {
       "seed": "Seed objective",
