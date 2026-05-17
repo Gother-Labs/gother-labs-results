@@ -30,7 +30,7 @@ def validate_result(result: dict[str, Any], path: Path) -> None:
     missing = [key for key in required if key not in result]
     if missing:
         raise SystemExit(f"{path} is missing required keys: {missing}")
-    if result["schema_version"] != "open-result/v1":
+    if result["schema_version"] != "result/v1":
         raise SystemExit(f"{path} has unsupported schema_version")
     for key in ("seed", "best", "improvement", "units", "validation_status"):
         if key not in result["metrics"]:

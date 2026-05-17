@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gotherlabs.com/schemas/open-result.schema.json",
+  "$id": "https://gotherlabs.com/schemas/result.schema.json",
   "title": "Göther Labs Result",
   "type": "object",
   "required": [
@@ -19,7 +19,7 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "open-result/v1"
+      "const": "result/v1"
     },
     "slug": {
       "type": "string",
