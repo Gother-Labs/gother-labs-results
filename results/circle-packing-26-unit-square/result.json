@@ -59,8 +59,8 @@
         "value": "2.635977"
       },
       {
-        "label": "Contacts validated",
-        "value": "78 total"
+        "label": "Improvement from baseline",
+        "value": "+174.64%"
       }
     ],
     "detail_path": "results/circle-packing-26-unit-square/",
