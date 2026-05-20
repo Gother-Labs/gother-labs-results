@@ -2,9 +2,9 @@
 
 ## Abstract
 
-This note reports a deterministic packing of 26 circles inside the unit square. The accepted geometry reaches a validated total radius of 2.635977. The public chain starts from the original domain `program.py` baseline with total radius 0.959778, then records the first generated candidates before the retained high-quality checkpoints. The governed lower-is-better score improves from -0.959778 to -2.635977.
+This note reports a deterministic 26-circle packing inside the unit square as a validated geometry, a public scoring trace, and a reproducible reconstruction candidate. The accepted geometry reaches total radius 2.635977. The public trace starts from the original domain `program.py` baseline at total radius 0.959778, records all valid scored candidates, and marks the retained implementation states that lead to the accepted packing. The governed lower-is-better score improves from -0.959778 to -2.635977.
 
-For audit clarity, the public claim is the validated geometry and curated best-so-far chain, not the raw solver artifact. The accepted candidate is deterministic: it reconstructs the accepted packing from the evolved contact graph and then returns the generated centers and radii to the evaluator.
+For audit clarity, the public claim is not a raw solver artifact. It is the combination of the accepted code surface, the replayed scoring evidence, and the evaluator-validated geometry. The accepted candidate reconstructs the packing from the evolved contact graph and returns the generated centers and radii only after the deterministic reconstruction has passed validation.
 
 ## 1. Problem formulation
 
@@ -38,19 +38,19 @@ Lower score is therefore better, but the report also shows \(R(P)\) directly bec
 
 ## 3. Accepted candidate
 
-The accepted public candidate reconstructs the packing from the contact structure exposed by the run. It starts from a coarse deterministic seed, solves the boundary and pairwise tangency equations with a small damped Newton system, and then validates the resulting geometry before returning it. The replayed centers and radii remain part of the audit bundle, but they are not the implementation surface.
+The accepted public candidate is a deterministic reconstruction program, not a stored list of final coordinates. It starts from a coarse deterministic seed, solves the boundary and pairwise tangency equations with a small damped Newton system, and then validates the resulting geometry before returning it. The replayed centers and radii remain part of the audit bundle as evidence of the accepted run, but the implementation surface is the reconstruction code.
 
 {{visual:implementation-code}}
 
 ## 4. Results
 
-The curated chain improved from the original `program.py` total radius of 0.959778 to an accepted total radius of 2.635977. The first valid generated candidate reached 1.064234, and the first generation later produced the retained 2.438966 checkpoint. In evaluator-score terms, the full public trajectory is a reduction from -0.959778 to -2.635977.
+The public trajectory has three visible phases. First, the original `program.py` baseline is a sparse packing with total radius 0.959778. Second, early generated candidates move quickly into useful geometries: the first valid candidate reaches 1.064234, and generation 1 later produces the retained 2.438966 checkpoint. Third, most later candidates explore the high-radius plateau until the accepted reconstruction reaches total radius 2.635977. In evaluator-score terms, the full public trajectory is a reduction from -0.959778 to -2.635977.
 
 {{visual:objective-curve}}
 
 {{visual:objective-summary-table}}
 
-The accepted packing is close to a contact graph: 20 boundary contacts and 58 pairwise contacts are detected at the public tolerance. The smallest boundary and pairwise slacks are near machine precision, which is expected for a tight validated layout.
+The accepted packing is tight in the sense exposed by the public diagnostics: 20 boundary contacts and 58 pairwise contacts are detected at the public tolerance. The smallest boundary and pairwise slacks are near machine precision, so the contact readout acts as a structural check on the geometry rather than a separate optimization claim.
 
 {{visual:packing-layout}}
 
@@ -60,10 +60,10 @@ The accepted packing is close to a contact graph: 20 boundary contacts and 58 pa
 
 This is a result for the 26-circle unit-square packing contract only. It is not a proof of global optimality, and it does not claim a general packing solver for other circle counts, other containers, or changed objectives.
 
-The accepted candidate is deterministic and reconstructs the validated contact graph. It is not a general-purpose solver for arbitrary circle-packing instances, and changing the circle count, container, objective, or contact graph creates a new evaluation.
+The accepted candidate is deterministic and reconstructs this validated contact graph. It is not a general-purpose solver for arbitrary circle-packing instances; changing the circle count, container, objective, or contact graph creates a new evaluation.
 
 ## 6. Reproducibility
 
-The bundle includes the accepted candidate, evaluation contract, curated evolution chain, metrics, provenance, replay confirmation, and a public [animated run surface](./run/). The run page is a presentation layer over the same public artifacts and excludes raw operational material.
+The bundle includes the accepted candidate, evaluation contract, curated evolution chain, scored-candidate trace, metrics, provenance, replay confirmation, and a public [animated run surface](./run/). The run page is a presentation layer over the same public artifacts and excludes raw operational material.
 
 The source bundle is available in [Göther Labs results repository](https://github.com/Gother-Labs/gother-labs-results/tree/main/results/circle-packing-26-unit-square).
