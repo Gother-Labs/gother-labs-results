@@ -39,6 +39,7 @@
     "evolution_trace": "artifacts/evolution.json",
     "metrics": "artifacts/metrics.json",
     "provenance": "artifacts/provenance.json",
+    "reference_comparison": "artifacts/reference-comparison.json",
     "replay": "artifacts/replay.json",
     "score_trace": "artifacts/score-trace.json",
     "plots": [
