@@ -40,6 +40,7 @@
     "metrics": "artifacts/metrics.json",
     "provenance": "artifacts/provenance.json",
     "replay": "artifacts/replay.json",
+    "score_trace": "artifacts/score-trace.json",
     "plots": [
       "assets/objective-curve.svg",
       "assets/packing-layout.svg",
@@ -69,7 +70,7 @@
       "improvement": "Score reduction"
     },
     "figure_captions": {
-      "assets/objective-curve.svg": "Best-so-far total radius over the curated public chain.",
+      "assets/objective-curve.svg": "Scored public candidates and best-so-far total radius.",
       "assets/packing-layout.svg": "Accepted 26-circle packing in the unit square.",
       "assets/contact-readout.svg": "Boundary and pairwise contact diagnostics for the accepted packing."
     },

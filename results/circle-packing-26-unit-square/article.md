@@ -2,7 +2,7 @@
 
 ## Abstract
 
-This note reports a deterministic packing of 26 circles inside the unit square. The accepted geometry reaches a validated total radius of 2.6359773947541023. The public chain starts from the original domain `program.py` baseline with total radius 0.9597783591318301, then records the first generated candidates before the retained high-quality checkpoints. The governed lower-is-better score improves from -0.9597783591318301 to -2.6359773947541023.
+This note reports a deterministic packing of 26 circles inside the unit square. The accepted geometry reaches a validated total radius of 2.635977. The public chain starts from the original domain `program.py` baseline with total radius 0.959778, then records the first generated candidates before the retained high-quality checkpoints. The governed lower-is-better score improves from -0.959778 to -2.635977.
 
 For audit clarity, the public claim is the validated geometry and curated best-so-far chain, not the raw solver artifact. The accepted candidate is deterministic: it reconstructs the accepted packing from the evolved contact graph and then returns the generated centers and radii to the evaluator.
 
@@ -44,7 +44,7 @@ The accepted public candidate reconstructs the packing from the contact structur
 
 ## 4. Results
 
-The curated chain improved from the original `program.py` total radius of 0.9597783591318301 to an accepted total radius of 2.6359773947541023. The first valid generated candidate reached 1.0642342609737314, and the first generation later produced the retained 2.4389662673796346 checkpoint. In evaluator-score terms, the full public trajectory is a reduction from -0.9597783591318301 to -2.6359773947541023.
+The curated chain improved from the original `program.py` total radius of 0.959778 to an accepted total radius of 2.635977. The first valid generated candidate reached 1.064234, and the first generation later produced the retained 2.438966 checkpoint. In evaluator-score terms, the full public trajectory is a reduction from -0.959778 to -2.635977.
 
 {{visual:objective-curve}}
 
@@ -64,6 +64,6 @@ The accepted candidate is deterministic and reconstructs the validated contact g
 
 ## 6. Reproducibility
 
-The bundle includes the accepted candidate, evaluation contract, curated evolution chain, metrics, provenance, replay confirmation, and a public animated run surface. The run page is a presentation layer over the same public artifacts and excludes raw operational material.
+The bundle includes the accepted candidate, evaluation contract, curated evolution chain, metrics, provenance, replay confirmation, and a public [animated run surface](./run/). The run page is a presentation layer over the same public artifacts and excludes raw operational material.
 
 The source bundle is available in [Göther Labs results repository](https://github.com/Gother-Labs/gother-labs-results/tree/main/results/circle-packing-26-unit-square).
