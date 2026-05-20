@@ -37,8 +37,8 @@
     "card_visual": "quadrature",
     "card_metrics": [
       {
-        "label": "Acceptance objective",
-        "value": "688.68 -> 114.51"
+        "label": "Mean residual error",
+        "value": "99.54% lower"
       },
       {
         "label": "Largest residual",
