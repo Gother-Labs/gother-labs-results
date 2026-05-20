@@ -4,7 +4,7 @@
 
 This note reports a deterministic dispatch rule for the Resource-Constrained Project Scheduling Problem (RCPSP). On a frozen public subset of PSPLIB J30, the evolutionary chain reduced the lower-is-better acceptance score from 14.312 to 12.087, a 15.55% reduction, while preserving feasibility on all 80 evaluated instances.
 
-For audit clarity, the public claim is the curated evolutionary chain, or cadena evolutiva, not a claim about the final isolated diagnostic run.
+For audit clarity, the public claim is the curated evolutionary chain, not a claim about the final isolated diagnostic run.
 
 The benchmark is deliberately external and bounded. Each portfolio instance has a proven optimal makespan, so the reported score measures schedule quality against a reference optimum rather than machine speed. The result should be read as a scheduling benchmark result on this fixed PSPLIB J30 subset, not as a claim that every RCPSP instance or production planning workflow is solved.
 
