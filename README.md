@@ -7,6 +7,7 @@ Each result lives in `results/<slug>/` and contains:
 
 - `result.json`: structured metadata validated against the public result schema
 - `article.md`: editable technical note
+- `README.md`: GitHub-rendered article copy with public artifact and figure links
 - `artifacts/`: sanitized public artifacts
 - `assets/`: public figures used by the website
 
