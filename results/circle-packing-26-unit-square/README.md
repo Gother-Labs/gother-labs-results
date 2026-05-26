@@ -6,19 +6,20 @@
 
 This result reports a deterministic packing of 26 non-overlapping circles inside
 the unit square. The accepted geometry reaches a validated total radius of
-2.635977, starting from a sparse public baseline at 0.959778. Because the
+2.635983, starting from a sparse public baseline at 0.959778. Because the
 evaluator score is the negative total radius, the governed lower-is-better score
-moves from -0.959778 to -2.635977.
+moves from -0.959778 to -2.635983.
 
 The claim is deliberately bounded: this is not a proof of global optimality and
 not a general circle-packing solver. It is a public, replayable geometry result
 with three audit surfaces: the accepted candidate code, the frozen validation
-contract, and the scored public trace that led to the retained packing.
+contract, and the scored public trace and seeded continuation that led to the retained packing.
 
 The result is also close to the strongest public AI-discovery references listed
-in the comparison artifact. It exceeds the original AlphaEvolve value reported
-for \(n = 26\), while remaining about 0.000006 total radius below the later
-2.635983 references.
+in the comparison artifact. It matches the strongest exact public values in the
+tracked papers at six displayed decimals. Some newer benchmark pages report
+2.636 at three-decimal precision, so this bundle treats world ranking as
+unresolved unless those entries publish replayable full-precision geometries.
 
 ## 1. Problem formulation
 
@@ -60,9 +61,10 @@ the direct geometric readout.
 ## 3. Accepted candidate
 
 The accepted public candidate is a deterministic reconstruction program rather
-than a stored coordinate table. It starts from a coarse deterministic seed,
-solves boundary and pairwise tangency equations with a damped Newton system, and
-validates the reconstructed geometry before returning it to the evaluator.
+than only a stored coordinate table. It starts from a coarse deterministic seed,
+solves boundary and pairwise tangency equations with a damped Newton system,
+checks the solve against the retained accepted continuation trace, and validates
+the geometry before returning it to the evaluator.
 
 See [accepted_candidate.py](artifacts/accepted_candidate.py).
 
@@ -75,21 +77,22 @@ that regenerates the accepted contact graph.
 | Readout | Value |
 | --- | ---: |
 | Baseline total radius | 0.959778 |
-| Accepted total radius | 2.635977 |
-| Total-radius gain | 1.676199 |
-| Evaluator score change | -0.959778 to -2.635977 |
+| Accepted total radius | 2.635983 |
+| Total-radius gain | 1.676205 |
+| Evaluator score change | -0.959778 to -2.635983 |
 | Boundary contacts detected | 20 |
 | Pairwise contacts detected | 58 |
 | Interior circles | 10 |
-| Minimum radius | 0.069357 |
-| Maximum radius | 0.135128 |
+| Minimum radius | 0.069181 |
+| Maximum radius | 0.137010 |
 
 The public trajectory has three visible phases. The original `program.py`
 baseline is a sparse packing with total radius 0.959778. Early generated
 candidates move quickly into useful geometries: the first valid candidate
 reaches 1.064234, and generation 1 later produces the retained 2.438966
-checkpoint. Later candidates mostly explore the high-radius plateau until the
-accepted reconstruction reaches 2.635977.
+checkpoint. Later candidates mostly explore the high-radius plateau until the previous
+accepted reconstruction reaches 2.635977. A seeded continuation from that
+geometry then reaches the updated accepted total radius 2.635983.
 
 ![Best-so-far total radius curve](assets/objective-curve.svg)
 
@@ -104,26 +107,29 @@ separate optimization claim.
 
 ![Boundary and pairwise contact diagnostics](assets/contact-readout.svg)
 
-## 5. External comparison
+## 5. Public standing
 
-The comparison artifact records the public reference values used for context:
+The comparison artifact records the strongest public reference values used for
+context:
 
-| Reference | Reported total radius | Difference versus this result |
-| --- | ---: | ---: |
-| AlphaEvolve | 2.635862 | +0.000115 |
-| AlphaEvolve V2 | 2.635983 | -0.000006 |
-| ShinkaEvolve | 2.635982 | -0.000005 |
-| ThetaEvolve | 2.635983 | -0.000006 |
-| TTT-Discover | 2.635983 | -0.000006 |
+| Reference | Public precision | Status versus this result |
+| --- | ---: | --- |
+| AlphaEvolve V2 | 2.635983 | Equal at six displayed decimals |
+| ThetaEvolve | 2.635983 | Equal at six displayed decimals |
+| TTT-Discover | 2.635983 | Equal at six displayed decimals |
+| LoongFlow | 2.636 | Rounded third-party benchmark entry; exact rank unresolved |
+| SkyDiscover | 2.636 | Rounded third-party benchmark entry; exact rank unresolved |
+| ASI-Evolve | 2.636 | Rounded third-party benchmark entry; exact rank unresolved |
 
-Positive differences mean the accepted Göther Labs geometry has the larger
-total radius; negative differences mean the reference value is larger. The
-2.635983 gap is about 0.000213% in total radius, so this result reaches
-99.999787% of that reference value.
+The accepted Göther Labs geometry reaches 2.6359830849768984. It is above
+2.635983 when compared to six-decimal published values at full precision, but
+that does not prove a strict rank above systems whose public entries are rounded
+to 2.636 or whose full coordinates are not available here.
 
 See [reference-comparison.json](artifacts/reference-comparison.json). The
-external values are taken from the circle-packing table in
-[Learning to Discover at Test Time](https://test-time-training.github.io/discover.pdf).
+six-decimal values are taken from the circle-packing table in
+[Learning to Discover at Test Time](https://test-time-training.github.io/discover.pdf);
+the rounded 2.636 entries are recorded as unresolved leaderboard context.
 
 ## 6. Limitations
 
@@ -133,7 +139,7 @@ objectives, or arbitrary contact graphs. Changing any of those terms creates a
 new evaluation.
 
 The external comparison is contextual rather than a leaderboard claim. It uses
-the values reported in the cited public table and does not independently rerun
+the values reported in cited public sources and does not independently rerun
 those systems under this repository's evaluator.
 
 The accepted candidate is deterministic and reconstructs this validated contact
@@ -142,7 +148,7 @@ generation.
 
 ## 7. Reproducibility
 
-The public bundle includes the accepted candidate, evaluation contract, curated
+The public bundle includes the accepted candidate, evaluation contract, curated original-plus-continuation
 evolution chain, scored-candidate trace, metrics, provenance, replay
 confirmation, figures, and the public
 [animated run surface](https://www.gotherlabs.com/results/circle-packing-26-unit-square/run/).

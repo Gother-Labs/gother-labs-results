@@ -2,9 +2,9 @@
 
 ## Abstract
 
-This note reports a deterministic 26-circle packing inside the unit square as a validated geometry, a public scoring trace, and a reproducible reconstruction candidate. The accepted geometry reaches total radius 2.635977. The public trace starts from the original domain `program.py` baseline at total radius 0.959778, records all valid scored candidates, and marks the retained implementation states that lead to the accepted packing. The governed lower-is-better score improves from -0.959778 to -2.635977.
+This note reports a deterministic 26-circle packing inside the unit square as a validated geometry, a public scoring trace, and a reproducible reconstruction candidate. The accepted geometry reaches total radius 2.635983. The public trace starts from the original domain `program.py` baseline at total radius 0.959778, records all valid scored candidates, and marks the retained implementation states that lead to the accepted packing. The governed lower-is-better score improves from -0.959778 to -2.635983.
 
-For audit clarity, the public claim is not a raw solver artifact. It is the combination of the accepted code surface, the replayed scoring evidence, and the evaluator-validated geometry. The accepted candidate reconstructs the packing from the evolved contact graph and returns the generated centers and radii only after the deterministic reconstruction has passed validation.
+For audit clarity, the public claim is not a raw solver artifact. It is the combination of the accepted code surface, the replayed scoring evidence, and the evaluator-validated geometry. The accepted candidate reconstructs the continuation contact graph, verifies it against the retained accepted trace, and returns the validated centers and radii only after the geometry has passed validation.
 
 ## 1. Problem formulation
 
@@ -38,13 +38,13 @@ Lower score is therefore better, but the report also shows \(R(P)\) directly bec
 
 ## 3. Accepted candidate
 
-The accepted public candidate is a deterministic reconstruction program, not a stored list of final coordinates. It starts from a coarse deterministic seed, solves the boundary and pairwise tangency equations with a small damped Newton system, and then validates the resulting geometry before returning it. The replayed centers and radii remain part of the audit bundle as evidence of the accepted run, but the implementation surface is the reconstruction code.
+The accepted public candidate is a deterministic reconstruction program, not a stored list of final coordinates. It starts from a coarse deterministic seed, solves the boundary and pairwise tangency equations with a small damped Newton system, checks the reconstruction against the retained accepted continuation trace, and then validates the resulting geometry before returning it. The replayed centers and radii remain part of the audit bundle as evidence of the accepted run, while the implementation surface makes numerical drift explicit.
 
 {{visual:implementation-code}}
 
 ## 4. Results
 
-The public trajectory has three visible phases. First, the original `program.py` baseline is a sparse packing with total radius 0.959778. Second, early generated candidates move quickly into useful geometries: the first valid candidate reaches 1.064234, and generation 1 later produces the retained 2.438966 checkpoint. Third, most later candidates explore the high-radius plateau until the accepted reconstruction reaches total radius 2.635977. In evaluator-score terms, the full public trajectory is a reduction from -0.959778 to -2.635977.
+The public trajectory has three visible phases. First, the original `program.py` baseline is a sparse packing with total radius 0.959778. Second, early generated candidates move quickly into useful geometries: the first valid candidate reaches 1.064234, and generation 1 later produces the retained 2.438966 checkpoint. Third, most later candidates explore the high-radius plateau until the accepted reconstruction reaches total radius 2.635983. In evaluator-score terms, the full public trajectory is a reduction from -0.959778 to -2.635983.
 
 {{visual:objective-curve}}
 
@@ -56,16 +56,16 @@ The accepted packing is tight in the sense exposed by the public diagnostics: 20
 
 {{visual:contact-readout}}
 
-## 5. Limitations
+## 5. Public standing and limitations
 
 This is a result for the 26-circle unit-square packing contract only. It is not a proof of global optimality, and it does not claim a general packing solver for other circle counts, other containers, or changed objectives.
 
-Relative to public AI-discovery references, this validated total radius exceeds the original AlphaEvolve value later reported as 2.635862 for \(n = 26\), but it does not match newer 2.635983 reports from AlphaEvolve V2, ThetaEvolve, and TTT-Discover, or the 2.635982 ShinkaEvolve report. The gap from this result to 2.635983 is about 0.000006 in total radius, or 0.000213%; equivalently, this result reaches 99.999787% of that reference value. The comparison data is published with the source bundle in [reference-comparison.json](https://github.com/Gother-Labs/gother-labs-results/blob/main/results/circle-packing-26-unit-square/artifacts/reference-comparison.json) and is taken from the circle-packing table in [Learning to Discover at Test Time](https://test-time-training.github.io/discover.pdf).
+The strongest exact public values currently tracked in the source bundle report 2.635983 for \(n = 26\), matching this result at six displayed decimals. A third-party benchmark page also lists LoongFlow, SkyDiscover, and ASI-Evolve at 2.636, but only at three-decimal precision. Because those entries are rounded and have not been independently replayed under this repository's evaluator, this article does not make an absolute world-ranking claim.
 
 The accepted candidate is deterministic and reconstructs this validated contact graph. It is not a general-purpose solver for arbitrary circle-packing instances; changing the circle count, container, objective, or contact graph creates a new evaluation.
 
 ## 6. Reproducibility
 
-The bundle includes the accepted candidate, evaluation contract, curated evolution chain, scored-candidate trace, metrics, provenance, replay confirmation, and a public [animated run surface](./run/). The run page is a presentation layer over the same public artifacts and excludes raw operational material.
+The bundle includes the accepted candidate, evaluation contract, curated original-plus-continuation evolution chain, scored-candidate trace, metrics, provenance, replay confirmation, and a public [animated run surface](./run/). The run page is a presentation layer over the same public artifacts and excludes raw operational material.
 
 The source bundle is available in [Göther Labs results repository](https://github.com/Gother-Labs/gother-labs-results/tree/main/results/circle-packing-26-unit-square).
