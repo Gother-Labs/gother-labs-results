@@ -4,8 +4,8 @@
   "title": "26-circle unit-square packing",
   "domain": "Geometric Optimization",
   "status": "published",
-  "published_at": "2026-05-20",
-  "summary": "A deterministic 26-circle packing in the unit square reaches a validated total radius of 2.635977. The public result exposes the geometry, the validation contract, and the curated best-so-far chain that found it.",
+  "published_at": "2026-05-26",
+  "summary": "A deterministic 26-circle packing in the unit square reaches a validated total radius of 2.635983. The public result exposes the geometry, the validation contract, the original chain, and the seeded continuation that found the improvement.",
   "problem_statement": "Find 26 non-overlapping circles inside the unit square that maximize the sum of radii while every circle stays inside the boundary and the public entrypoint remains deterministic.",
   "evaluation_contract": {
     "summary": "Candidates return exactly 26 centers, 26 positive radii, and a reported sum. The evaluator checks finite values, sum consistency, unit-square containment, pairwise non-overlap, and deterministic repeat calls; the score is the negative total radius, so lower is better.",
@@ -13,26 +13,26 @@
   },
   "metrics": {
     "seed": -0.9597783591318301,
-    "best": -2.6359773947541023,
-    "improvement": 1.6761990356222722,
-    "improvement_pct": 174.64438739153093,
+    "best": -2.6359830849768984,
+    "improvement": 1.6762047258450683,
+    "improvement_pct": 174.6449802599512,
     "units": "score",
     "direction": "lower_is_better",
-    "validation_status": "contact-system-construction",
+    "validation_status": "contact-system-reconstruction-with-accepted-trace",
     "seed_sum_radii": 0.9597783591318301,
-    "accepted_sum_radii": 2.6359773947541023,
-    "sum_radii_gain": 1.6761990356222722,
-    "known_target_sum_radii": 2.635,
+    "accepted_sum_radii": 2.6359830849768984,
+    "sum_radii_gain": 1.6762047258450683,
+    "known_target_sum_radii": 2.635983,
     "known_target_gap": 0.0,
     "circle_count": 26,
     "valid_rate": 1,
     "boundary_contact_count": 20,
     "pairwise_contact_count": 58,
     "interior_circle_count": 10,
-    "min_radius": 0.06935728482282306,
-    "max_radius": 0.13512828357180387,
-    "mean_radius": 0.10138374595208086,
-    "validity_margin": -1.757760603737779e-13
+    "min_radius": 0.06918067635842222,
+    "max_radius": 0.13701043012592073,
+    "mean_radius": 0.10138396480680378,
+    "validity_margin": -3.786615465628529e-11
   },
   "artifacts": {
     "candidate_code": "artifacts/accepted_candidate.py",
@@ -56,7 +56,7 @@
     "card_metrics": [
       {
         "label": "Validated sum radii",
-        "value": "2.635977"
+        "value": "2.635983"
       },
       {
         "label": "Improvement from baseline",
@@ -75,6 +75,6 @@
       "assets/packing-layout.svg": "Accepted 26-circle packing in the unit square.",
       "assets/contact-readout.svg": "Boundary and pairwise contact diagnostics for the accepted packing."
     },
-    "score_note": "The evaluator score is negative total radius. The report also shows sum radii directly because that is the geometric objective readers inspect."
+    "score_note": "The evaluator score is negative total radius. The report also shows sum radii directly because that is the geometric objective readers inspect; the final improvement comes from a continuation seeded from the previous accepted geometry."
   }
 }
