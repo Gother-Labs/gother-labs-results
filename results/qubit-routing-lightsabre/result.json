@@ -1,0 +1,87 @@
+{
+  "schema_version": "result/v1",
+  "slug": "qubit-routing-lightsabre",
+  "title": "Qubit routing LightSABRE benchmark",
+  "domain": "Quantum Compilation",
+  "status": "published",
+  "published_at": "2026-05-28",
+  "summary": "A deterministic qubit-routing policy is replayed against a frozen 24-circuit LightSABRE portfolio across Q20, Willow, and Heron-FEZ topology targets. The accepted candidate reduces aggregate added CNOTs by 12,294 while keeping the topology split and case-level readout public.",
+  "problem_statement": "Find a deterministic routing policy that maps logical two-qubit interactions onto nearest-neighbor hardware coupling graphs while reducing added CNOT count against the fixed LightSABRE reference.",
+  "evaluation_contract": {
+    "summary": "Candidates are evaluated on 24 benchmark circuits crossed with Q20, Willow, and Heron-FEZ coupling graphs. The evaluator compares added CNOT count against LightSABRE, uses a lower-is-better negative weighted CNOT-reduction score, and requires deterministic replay validity across all 72 cases.",
+    "artifact": "artifacts/evaluation_contract.md"
+  },
+  "metrics": {
+    "seed": -8938.800000000047,
+    "best": -11506.200000000026,
+    "improvement": 2567.3999999999796,
+    "improvement_pct": 28.72197610417468,
+    "units": "weighted_cnot_delta_score",
+    "direction": "lower_is_better",
+    "validation_status": "exact-replay",
+    "baseline_weighted_cnot_delta": 8938.800000000047,
+    "accepted_weighted_cnot_delta": 11506.200000000026,
+    "weighted_cnot_delta_gain": 2567.3999999999796,
+    "lightsabre_relative_improvement_pct": 3.9905737545281035,
+    "candidate_added_cnot": 295782,
+    "lightsabre_added_cnot": 308076,
+    "sabre_added_cnot": 333756,
+    "added_cnot_reduction_vs_lightsabre": 12294,
+    "added_cnot_reduction_vs_lightsabre_pct": 3.9905737545281035,
+    "added_cnot_reduction_vs_sabre": 37974,
+    "added_cnot_reduction_vs_sabre_pct": 11.37777298385647,
+    "valid_rate": 1,
+    "ok_cases": 72,
+    "total_cases": 72,
+    "total_depth": 368811,
+    "total_swaps": 98594,
+    "wins_vs_lightsabre": 31,
+    "ties_vs_lightsabre": 6,
+    "losses_vs_lightsabre": 35,
+    "q20_relative_improvement_pct": 17.38523650500922,
+    "willow_relative_improvement_pct": 2.11945002988968,
+    "heron_fez_relative_improvement_pct": -0.3709603508848495
+  },
+  "artifacts": {
+    "candidate_code": "artifacts/accepted_candidate.rs",
+    "evolution_trace": "artifacts/evolution.json",
+    "metrics": "artifacts/metrics.json",
+    "provenance": "artifacts/provenance.json",
+    "replay": "artifacts/replay.json",
+    "score_trace": "artifacts/score-trace.json",
+    "plots": [
+      "assets/objective-curve.svg",
+      "assets/target-comparison.svg",
+      "assets/routing-readout.svg"
+    ]
+  },
+  "website": {
+    "order": 4,
+    "card_label": "04 Quantum Compilation",
+    "card_summary": "A routing policy is replayed against LightSABRE on a frozen 72-case portfolio across Q20, Willow, and Heron-FEZ targets.",
+    "card_visual": "qubit-routing",
+    "card_metrics": [
+      {
+        "label": "Added CNOT reduction",
+        "value": "12,294 fewer"
+      },
+      {
+        "label": "Q20 CNOT reduction",
+        "value": "17.39%"
+      }
+    ],
+    "detail_path": "results/qubit-routing-lightsabre/",
+    "surface_path": "results/qubit-routing-lightsabre/run/",
+    "display_labels": {
+      "seed": "Baseline score",
+      "best": "Accepted score",
+      "improvement": "Score reduction"
+    },
+    "figure_captions": {
+      "assets/objective-curve.svg": "Objective trace for the curated public chain. Faint points are scored candidates, the solid line is retained best-so-far weighted CNOT reduction, and rings mark baseline and accepted.",
+      "assets/target-comparison.svg": "Per-topology added-CNOT comparison for Q20, Willow, and Heron-FEZ. Shorter accepted bars mean fewer added CNOTs than the LightSABRE reference.",
+      "assets/routing-readout.svg": "Selected largest case-level savings from the replay export, sorted by absolute CNOT reduction versus LightSABRE."
+    },
+    "score_note": "The governed score is the negative weighted CNOT reduction versus LightSABRE, so lower is better. The report also shows positive CNOT reductions because that is the more readable routing-quality readout."
+  }
+}
