@@ -1,0 +1,48 @@
+{
+  "schema_version": "result/v1",
+  "evidence_model": "before_after",
+  "slug": "before-after-result",
+  "title": "Before/after validation fixture",
+  "domain": "Testing",
+  "status": "published",
+  "published_at": "2026-09-09",
+  "summary": "A verified before/after bundle without optimizer-history artifacts.",
+  "problem_statement": "Prove that inspectable before/after evidence can validate without an evolution trace.",
+  "evaluation_contract": {
+    "summary": "The accepted implementation must pass correctness checks before evaluation.",
+    "artifact": "artifacts/evaluation_contract.md"
+  },
+  "metrics": {
+    "validation_status": "fixture-pass",
+    "comparisons": [
+      {
+        "id": "case-a",
+        "measures": {
+          "area_pct": -10.0,
+          "timing_pct": -2.5
+        }
+      }
+    ]
+  },
+  "artifacts": {
+    "baseline_implementation": "artifacts/before.txt",
+    "accepted_implementation": "artifacts/after.txt",
+    "patch": "artifacts/change.patch",
+    "correctness_evidence": "artifacts/correctness.json",
+    "evaluation_evidence": "artifacts/evaluation.json",
+    "metrics": "artifacts/metrics.json",
+    "provenance": "artifacts/provenance.json"
+  },
+  "website": {
+    "order": 98,
+    "card_label": "Fixture",
+    "card_summary": "A deterministic before/after validation fixture.",
+    "card_metrics": [
+      {
+        "label": "Area delta",
+        "value": "-10.0%"
+      }
+    ],
+    "detail_path": "results/before-after-result/"
+  }
+}
