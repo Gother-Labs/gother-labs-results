@@ -6,9 +6,33 @@ This portfolio reports three correctness-gated before/after RTL transformations 
 
 The result is not a leaderboard and has no pooled portfolio score. Each percentage below is a case-local paired estimate under that circuit's own frozen contract. The portfolio establishes an inspectable evidence pattern: freeze the contract, prove the accepted implementation is valid, measure it against the baseline, and publish the exact technical delta with its limitations.
 
-![Common RTL evidence contract from frozen scope through correctness, paired implementation measurement, and a before/after evidence package.](assets/evidence-contract.svg)
+## 1. Why RTL optimization matters
 
-## 1. Three transformation regimes
+Register-transfer level design fixes more than functional equations. RTL encodes state, operator widths, mux structure, resource sharing, arithmetic topology, enables, pipeline boundaries, and cycle-level protocol. Synthesis and technology mapping can simplify and canonicalize aggressively, but they operate inside the behavioral and timing contract they are given. Two functionally equivalent descriptions can therefore induce materially different mapped logic depth, fanout, routing pressure, switching activity, and resource count.
+
+That is why RTL optimization is an implementation problem rather than a source-code beauty contest. A useful transformation changes the structure presented to the downstream toolchain while preserving the interface and the declared observable behavior.
+
+![RTL design decisions flow through synthesis, technology mapping, placement and routing before implementation-level PPA is extracted.](assets/rtl-to-ppa.svg)
+
+PPA is shorthand for **power, performance, and area**. In these public cases the terms have a deliberately narrow implementation-level meaning:
+
+| Dimension | Current public measurement | What it does not mean |
+|---|---|---|
+| Area | VTR total-area estimate after mapping and implementation on the pinned academic architecture | ASIC die area or commercial FPGA resource characterization |
+| Performance | Post-route critical-path delay; lower delay permits a higher implementation-level clock bound when that path is limiting | End-to-end application throughput or system latency |
+| Power | Active total-power estimate under the case's declared activity model and PTM 45 nm conditions | Board power, measured energy, thermal behavior, or silicon characterization |
+
+Physical implementation is heuristic and seed-sensitive, so a single place-and-route result is a weak comparison. The public cases compare the frozen baseline and accepted RTL through matched implementation pairs, then estimate the case-local ratios and confidence intervals from that paired sample. The purpose of the pairing is to ask whether the source transformation survives implementation variation, not whether one favorable run happened to win.
+
+### Evidence-scale warning
+
+**These are bounded proof-of-method RTL benchmarks, not industrial-scale subsystem results.** They were chosen so that the complete evidence boundary can remain public and inspectable: baseline RTL, accepted RTL, exact patch, functional/formal correctness, paired implementation evidence, provenance, and verifier output.
+
+That makes the three cases useful evidence that the method works end to end. It does **not** yet establish performance on large multi-module subsystems, memory/interconnect-heavy datapaths, deep pipeline/control interactions, commercial FPGA or ASIC flows, customer-owned production RTL, or manufactured silicon.
+
+Higher-complexity RTL cases are currently in progress. This Result will be updated only when those cases satisfy the same correctness, provenance, frozen-contract, and measurement requirements; work in progress is not counted as public evidence.
+
+## 2. Three transformation regimes
 
 The value of the portfolio is not that three circuits happened to move by different percentages. It is that the accepted changes operate at three different structural levels of RTL.
 
@@ -22,11 +46,13 @@ The value of the portfolio is not that three circuits happened to move by differ
 
 All three public composites use 64 fixed paired implementations and the same equal-weight area-delay-power score form. That common form supports consistent case-local acceptance; it does not make the circuits a cross-case performance ranking.
 
-## 2. Common evaluation methodology
+## 3. Common evaluation methodology
 
 The evaluation contract is frozen before the accepted implementation is measured. Editable RTL, protected interfaces, functional semantics, formal scope, toolchain, target, metrics, sampling policy, and validity limits belong to the experiment identity.
 
 A candidate that fails correctness cannot receive a PPA improvement score. Missing, inconclusive, or timed-out required evidence fails closed.
+
+![Common RTL evidence contract from frozen scope through correctness, paired implementation measurement, and a before/after evidence package.](assets/evidence-contract.svg)
 
 All current cases use a pinned Linux/amd64 VTR/VPR flow, a homogeneous academic LUT6 architecture, and the PTM 45 nm model at 0.9 V and 85 C. The target does not model commercial DSP slices, BRAM, or ASIC arithmetic cells. Total area, post-route critical-path delay, and active total power are implementation-model estimates, not physical measurements.
 
@@ -40,9 +66,11 @@ with the frozen baseline normalized to 1.0 and lower values preferred. Search-vi
 
 The complete common contract is published in [evaluation_contract.md](artifacts/evaluation_contract.md).
 
-## 3. SHA-1 RTL — Boolean simplification
+## 4. SHA-1 RTL — Boolean simplification
 
 The first case is a stateful SHA-1 compression core with a 32-bit command/data interface and an 80-round compression schedule. SHA-1 is retained here as a legacy compute benchmark, not as a recommended modern security primitive.
+
+![SHA-1 design context and case-local paired PPA estimate, showing the optimized logic inside the round/state path and the 95% intervals from 64 publication pairs.](assets/sha1-context-ppa.svg)
 
 The accepted RTL makes three cycle-equivalent changes: it replaces XOR with OR where the choose-function terms are mutually exclusive, shares XOR terms across the parity and majority logic, and reads the five chaining-state registers directly rather than slicing a temporary 160-bit concatenation.
 
@@ -67,9 +95,11 @@ The composite improves in all 64 publication pairs. Individual metrics remain st
 
 [Case report](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/cases/sha1/technical-report.pdf) · [Case source](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/tree/v2.2.2/cases/sha1) · [Verifier](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/cases/sha1/verify.py) · [Raw evidence archive](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/releases/download/v2.1.0/sha1-vtr45-full-evidence-v2.tar.gz)
 
-## 4. INT8 MatVec RTL — Arithmetic restructuring
+## 5. INT8 MatVec RTL — Arithmetic restructuring
 
 The second case is a combinational signed INT8 4x4 matrix-vector datapath. It performs sixteen exact 8x8 multiplications and returns four signed INT32 dot products.
+
+![INT8 MatVec design context and case-local paired PPA estimate, locating the arithmetic rewrite in the multiplier-to-reduction datapath and showing the 95% intervals from 64 publication pairs.](assets/int8-context-ppa.svg)
 
 The baseline extends every product to 32 bits before a wide chained accumulation. The accepted RTL keeps the exact numerical range narrow for longer: signed 16-bit products feed pairwise 17-bit sums, then balanced 18-bit row sums, and only the final value is sign-extended to the 32-bit output interface.
 
@@ -94,9 +124,11 @@ The target contains no commercial DSP-slice, BRAM, or ASIC MAC-cell model, so th
 
 [Case report](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/cases/int8-matvec/technical-report.pdf) · [Case source](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/tree/v2.2.2/cases/int8-matvec) · [Verifier](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/cases/int8-matvec/verify.py) · [Raw evidence archive](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/releases/download/v2.0.1/int8-matvec-vtr45-full-evidence-v1.tar.gz)
 
-## 5. ML-KEM CBD RTL — State representation
+## 6. ML-KEM CBD RTL — State representation
 
 The third case is a stateful centred-binomial-distribution sampler from the open HOPE-MLKEM implementation. It consumes SHAKE-derived bits and produces the small positive and negative coefficients used as controlled mathematical noise in ML-KEM.
+
+![ML-KEM CBD design context and case-local paired PPA estimate, locating the state-representation rewrite between the SHAKE input state and coefficient-generation path and showing the 95% intervals from 64 publication pairs.](assets/mlkem-context-ppa.svg)
 
 The baseline physically advances a 1,096-bit state by either 16 or 24 bits depending on eta. The accepted representation always moves the physical state in fixed 24-bit chunks and records the remaining byte offset in a two-bit phase. A logical state view reconstructs the same head observed by the existing coefficient arithmetic.
 
@@ -123,7 +155,7 @@ The power comparison uses the case's declared deterministic ACE probabilistic ac
 
 [Case report](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/cases/mlkem-cbd/technical-report.pdf) · [Case source](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/tree/v2.2.2/cases/mlkem-cbd) · [Verifier](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/cases/mlkem-cbd/verify.py) · [Raw evidence archive](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/releases/download/v2.2.0/mlkem-cbd-vtr45-full-evidence-v1.tar.gz)
 
-## 6. Portfolio readout
+## 7. Portfolio readout
 
 | Case | Area | Delay | Active power | Composite |
 |---|---:|---:|---:|---:|
@@ -135,15 +167,15 @@ These rows are case-local paired estimates. Do not rank, average, or interpret t
 
 The machine-readable paired readout is published in [evaluation.json](artifacts/evaluation.json), with the Results-facing comparison surface in [metrics.json](artifacts/metrics.json).
 
-## 7. What the portfolio establishes
+## 8. What the portfolio establishes
 
 The public evidence establishes that three distinct RTL transformations were frozen, correctness-gated, measured under declared implementation contracts, and published with inspectable before/after identities and exact source changes.
 
 The portfolio demonstrates reasoning over local Boolean structure, arithmetic width and tree structure, and sequential physical state representation. It also demonstrates a repeatable evidence boundary: baseline identity, accepted identity, exact patch, correctness evidence, paired implementation evidence, provenance, and a fail-closed verifier path.
 
-It does not establish that these transformations generalize to another design, that the percentages are comparable across circuits, or that Göther replaces a customer's implementation or signoff authority.
+It does not establish that these transformations generalize to another design, that the percentages are comparable across circuits, or that Göther replaces a customer's implementation or signoff authority. The current public evidence scale is intentionally smaller than the industrial workloads the methodology is intended to address next.
 
-## 8. Evidence and assurance status
+## 9. Evidence and assurance status
 
 | Evidence layer | Public status |
 |---|---|
@@ -158,7 +190,7 @@ The raw verifier checks recorded provenance and re-extracts the published PPA va
 
 The public audit protocol is available in [AUDIT.md](https://github.com/juan-fernandez-gotherlabs/rtl-optimization-case-study/blob/v2.2.2/AUDIT.md).
 
-## 9. Reproducibility and authority
+## 10. Reproducibility and authority
 
 The quantitative authority for this Result is the reviewed public evidence release `v2.2.2`, commit `8cd8b479488f0693d76c2fab39eabf4bd6f9279c`. Later repository changes are not silently promoted into this claim surface.
 
