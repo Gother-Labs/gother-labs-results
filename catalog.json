@@ -3,6 +3,100 @@
   "results": [
     {
       "schema_version": "result/v1",
+      "evidence_model": "before_after",
+      "slug": "verified-rtl-optimization",
+      "title": "Verified RTL optimization",
+      "domain": "Digital Hardware",
+      "status": "published",
+      "published_at": "2026-09-09",
+      "summary": "Three contract-preserving RTL transformations across Boolean logic, arithmetic structure, and sequential state representation, each correctness-gated before paired PPA evaluation.",
+      "problem_statement": "Can structurally different RTL transformations reduce implementation-model area, routed delay, or active power while preserving each design's declared functional contract?",
+      "evaluation_contract": {
+        "summary": "Each case freezes its interface, correctness semantics, VTR/PTM 45 nm target, primary metrics, and paired acceptance policy before the accepted RTL is compared with its baseline. Correctness failure blocks PPA acceptance.",
+        "artifact": "artifacts/evaluation_contract.md"
+      },
+      "metrics": {
+        "validation_status": "verified-public-portfolio",
+        "comparisons": [
+          {
+            "id": "sha1",
+            "measures": {
+              "area_improvement_pct": 0.15,
+              "delay_improvement_pct": 5.2,
+              "power_improvement_pct": 1.38,
+              "composite_improvement_pct": 2.27
+            }
+          },
+          {
+            "id": "int8-matvec",
+            "measures": {
+              "area_improvement_pct": 15.5943,
+              "delay_improvement_pct": 3.1868,
+              "power_improvement_pct": 5.7081,
+              "composite_improvement_pct": 8.323
+            }
+          },
+          {
+            "id": "mlkem-cbd",
+            "measures": {
+              "area_improvement_pct": 15.9083,
+              "delay_improvement_pct": 6.992,
+              "power_improvement_pct": 5.9621,
+              "composite_improvement_pct": 9.7338
+            }
+          }
+        ]
+      },
+      "artifacts": {
+        "baseline_implementation": "artifacts/baseline-implementations.json",
+        "accepted_implementation": "artifacts/accepted-implementations.json",
+        "patch": [
+          "artifacts/patches/sha1.patch",
+          "artifacts/patches/int8-matvec.patch",
+          "artifacts/patches/mlkem-cbd.patch"
+        ],
+        "correctness_evidence": "artifacts/correctness.json",
+        "evaluation_evidence": "artifacts/evaluation.json",
+        "metrics": "artifacts/metrics.json",
+        "provenance": "artifacts/provenance.json"
+      },
+      "website": {
+        "order": 0,
+        "featured": true,
+        "card_label": "Digital Hardware",
+        "card_summary": "Three correctness-gated RTL transformations span Boolean simplification, arithmetic restructuring, and sequential state representation.",
+        "card_visual": "rtl-portfolio",
+        "card_metrics": [
+          {
+            "label": "Public cases",
+            "value": "3"
+          },
+          {
+            "label": "Acceptance",
+            "value": "64 pairs / case"
+          },
+          {
+            "label": "Correctness",
+            "value": "Gate before PPA"
+          },
+          {
+            "label": "External rerun",
+            "value": "Not claimed"
+          }
+        ],
+        "detail_path": "results/verified-rtl-optimization/",
+        "figure_captions": {
+          "assets/evidence-contract.svg": "The common evidence boundary: freeze the contract, verify correctness, measure PPA on the pinned target, then apply fixed paired acceptance.",
+          "assets/transformation-regimes.svg": "Three distinct transformation regimes represented by the public portfolio.",
+          "assets/sha1-transform.svg": "SHA-1: shared Boolean terms and direct state readout replace duplicated logic and a temporary concatenation.",
+          "assets/int8-transform.svg": "INT8 MatVec: pairwise 17-bit sums and a balanced 18-bit tree replace repeated 32-bit extension and wide chained accumulation.",
+          "assets/mlkem-transform.svg": "ML-KEM CBD: a fixed 24-bit physical shift plus a two-bit phase preserves the same logical 1,096-bit state view."
+        },
+        "score_note": "There is no pooled portfolio score. Every percentage is a case-local paired estimate under that circuit's frozen evaluation contract."
+      }
+    },
+    {
+      "schema_version": "result/v1",
       "slug": "quadrature-rule-optimization",
       "title": "Quadrature rule optimization",
       "domain": "Scientific Computing",
