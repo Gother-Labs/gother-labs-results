@@ -21,6 +21,7 @@ SCHEMA_DIR = ROOT / "schemas"
 RESULT_SCHEMA_ID = "https://gotherlabs.com/schemas/result.schema.json"
 PUBLIC_ARTIFACT_ROOTS = {"artifacts", "assets"}
 SAFE_PATH_SEGMENT = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+BEFORE_AFTER_EVIDENCE_MODEL = "before_after"
 FORBIDDEN_NAME_PARTS = (
     "prompt",
     "reason",
@@ -194,6 +195,9 @@ def validate_metrics(result_dir: Path, result: dict[str, Any]) -> None:
     )
     if artifact_metrics != metrics:
         raise ResultValidationError("artifacts/metrics.json does not match result.metrics")
+
+    if result.get("evidence_model") == BEFORE_AFTER_EVIDENCE_MODEL:
+        return
 
     if result["slug"] == "circle-packing-26-unit-square":
         expected = float(metrics["seed"]) - float(metrics["best"])

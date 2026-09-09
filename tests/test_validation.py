@@ -14,13 +14,14 @@ from tools.validate_result import ResultValidationError, validate_result
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "tests" / "fixtures" / "minimal-result"
+BEFORE_AFTER_FIXTURE = ROOT / "tests" / "fixtures" / "before-after-result"
 
 
 @contextmanager
-def fixture_bundle() -> Iterator[Path]:
+def fixture_bundle(source: Path = FIXTURE) -> Iterator[Path]:
     with tempfile.TemporaryDirectory() as temp_dir:
-        bundle = Path(temp_dir) / "minimal-result"
-        shutil.copytree(FIXTURE, bundle)
+        bundle = Path(temp_dir) / source.name
+        shutil.copytree(source, bundle)
         yield bundle
 
 
@@ -45,6 +46,33 @@ class ResultValidationTests(unittest.TestCase):
 
     def test_valid_fixture_passes(self) -> None:
         validate_result(FIXTURE)
+
+    def test_before_after_fixture_passes_without_optimizer_history(self) -> None:
+        result = validate_result(BEFORE_AFTER_FIXTURE)
+        self.assertEqual(result["evidence_model"], "before_after")
+        self.assertNotIn("evolution_trace", result["artifacts"])
+        self.assertNotIn("candidate_code", result["artifacts"])
+        self.assertNotIn("seed", result["metrics"])
+
+    def test_before_after_missing_patch_fails_closed(self) -> None:
+        with fixture_bundle(BEFORE_AFTER_FIXTURE) as bundle:
+            result = load_fixture_result(bundle)
+            del result["artifacts"]["patch"]
+            write_fixture_result(bundle, result)
+
+            with self.assertRaises(ResultValidationError) as raised:
+                validate_result(bundle)
+
+        self.assertIn("patch", str(raised.exception))
+
+    def test_before_after_rejects_legacy_evolution_trace(self) -> None:
+        with fixture_bundle(BEFORE_AFTER_FIXTURE) as bundle:
+            result = load_fixture_result(bundle)
+            result["artifacts"]["evolution_trace"] = "artifacts/evaluation.json"
+            write_fixture_result(bundle, result)
+
+            with self.assertRaises(ResultValidationError):
+                validate_result(bundle)
 
     def test_additional_top_level_property_reports_json_path(self) -> None:
         with fixture_bundle() as bundle:
@@ -138,6 +166,23 @@ class CatalogTests(unittest.TestCase):
         first = render_catalog(build_catalog(ROOT))
         second = render_catalog(build_catalog(ROOT))
         self.assertEqual(first, second)
+
+    def test_catalog_accepts_both_evidence_models_deterministically(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            shutil.copytree(FIXTURE, root / "results" / FIXTURE.name)
+            shutil.copytree(
+                BEFORE_AFTER_FIXTURE,
+                root / "results" / BEFORE_AFTER_FIXTURE.name,
+            )
+            first = render_catalog(build_catalog(root))
+            second = render_catalog(build_catalog(root))
+            self.assertEqual(first, second)
+            self.assertEqual(
+                [entry["slug"] for entry in json.loads(first)["results"]],
+                ["before-after-result", "minimal-result"],
+            )
 
     def test_committed_catalog_matches_validated_inputs(self) -> None:
         expected = render_catalog(build_catalog(ROOT))

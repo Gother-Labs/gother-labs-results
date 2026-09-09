@@ -1,0 +1,12 @@
+{
+  "validation_status": "fixture-pass",
+  "comparisons": [
+    {
+      "id": "case-a",
+      "measures": {
+        "area_pct": -10.0,
+        "timing_pct": -2.5
+      }
+    }
+  ]
+}
