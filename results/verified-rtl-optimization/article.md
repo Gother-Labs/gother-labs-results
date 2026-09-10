@@ -22,7 +22,15 @@ PPA is shorthand for **power, performance, and area**. In these public cases the
 | Performance | Post-route critical-path delay; lower delay permits a higher implementation-level clock bound when that path is limiting | End-to-end application throughput or system latency |
 | Power | Active total-power estimate under the case's declared activity model and PTM 45 nm conditions | Board power, measured energy, thermal behavior, or silicon characterization |
 
-Physical implementation is heuristic and seed-sensitive, so a single place-and-route result is a weak comparison. The public cases compare the frozen baseline and accepted RTL through matched implementation pairs, then estimate the case-local ratios and confidence intervals from that paired sample. The purpose of the pairing is to ask whether the source transformation survives implementation variation, not whether one favorable run happened to win.
+For a limiting post-route critical path, the corresponding implementation-level clock bound is approximately
+
+$$
+f_{max}[\mathrm{MHz}] \approx \frac{1000}{t_{crit}[\mathrm{ns}]}
+$$
+
+This relation is a timing interpretation of the routed implementation; it is not a claim about complete-system throughput.
+
+Physical implementation is heuristic and seed-sensitive, so a single place-and-route result is a weak comparison. The public cases compare the frozen baseline and accepted RTL through matched implementation pairs. The estimator therefore asks whether the source transformation survives implementation variation rather than whether one favorable run happened to win.
 
 ### Evidence-scale warning
 
@@ -36,7 +44,7 @@ Higher-complexity RTL cases are currently in progress. This Result will be updat
 
 The value of the portfolio is not that three circuits happened to move by different percentages. It is that the accepted changes operate at three different structural levels of RTL.
 
-![Three public RTL transformation regimes: Boolean structure, arithmetic structure, and sequential state representation.](assets/transformation-regimes.svg)
+![Three public RTL transformations spanning Boolean structure, arithmetic reduction, and sequential state representation.](assets/transformation-regimes.svg)
 
 | Case | Structural change | Correctness boundary | Case-local composite |
 |---|---|---|---:|
@@ -44,7 +52,7 @@ The value of the portfolio is not that three circuits happened to move by differ
 | INT8 MatVec RTL | Range-correct intermediate widths and balanced addition tree | Deterministic simulation, exhaustive combinational equivalence | **8.3230% lower** |
 | ML-KEM CBD RTL | Fixed 24-bit physical movement plus a two-bit byte phase | Dual-design regression, sequential induction, logical-state refinement | **9.7338% lower** |
 
-All three public composites use 64 fixed paired implementations and the same equal-weight area-delay-power score form. That common form supports consistent case-local acceptance; it does not make the circuits a cross-case performance ranking.
+All three public composites use 64 fixed publication pairs and the same equal-weight area-delay-power score form. That common form supports consistent case-local acceptance; it does not make the circuits a cross-case performance ranking.
 
 ## 3. Common evaluation methodology
 
@@ -56,15 +64,83 @@ A candidate that fails correctness cannot receive a PPA improvement score. Missi
 
 All current cases use a pinned Linux/amd64 VTR/VPR flow, a homogeneous academic LUT6 architecture, and the PTM 45 nm model at 0.9 V and 85 C. The target does not model commercial DSP slices, BRAM, or ASIC arithmetic cells. Total area, post-route critical-path delay, and active total power are implementation-model estimates, not physical measurements.
 
-The case-local composite is
+For publication pair \(i\) and primary metric \(m\in\{A,D,P\}\), the verifier starts from the accepted and baseline measurements under the same paired implementation condition:
 
 $$
-S = \left(r_{area} r_{delay} r_{power}\right)^{1/3},
+r_{m,i}=\frac{x^{(acc)}_{m,i}}{x^{(base)}_{m,i}},
+\qquad
+\ell_{m,i}=\ln r_{m,i}
 $$
 
-with the frozen baseline normalized to 1.0 and lower values preferred. Search-visible evidence and the fixed publication sample remain separate under the source case contracts.
+Ratio space is directional: \(r<1\) is an improvement, \(r=1\) is parity, and \(r>1\) is a regression. The percentage convention used throughout the Result is
 
-The complete common contract is published in [evaluation_contract.md](artifacts/evaluation_contract.md).
+$$
+I(r)=100(1-r)
+$$
+
+The composite is formed inside each pair from the three primary ratios. Equivalently, it is the arithmetic mean in log-ratio space and the geometric mean in ratio space:
+
+$$
+\ell_{C,i}=\frac{\ell_{A,i}+\ell_{D,i}+\ell_{P,i}}{3},
+\qquad
+r_{C,i}=\exp(\ell_{C,i})
+=\left(r_{A,i}r_{D,i}r_{P,i}\right)^{1/3}
+$$
+
+The published point estimate is not obtained by averaging percentage improvements. For each metric, including the composite, the 64 log-ratios are summarized as
+
+$$
+\bar{\ell}_m=\frac{1}{n}\sum_{i=1}^{n}\ell_{m,i},
+\qquad
+s_m=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}\left(\ell_{m,i}-\bar{\ell}_m\right)^2},
+\qquad
+SE_m=\frac{s_m}{\sqrt{n}},
+\quad n=64
+$$
+
+and transformed back to ratio space:
+
+$$
+\hat r_m=\exp(\bar{\ell}_m),
+\qquad
+\hat I_m=100\left(1-\hat r_m\right)
+$$
+
+The two-sided 95% interval is computed in log space with a Student-t critical value for 63 degrees of freedom,
+
+$$
+L_m=\exp\left(\bar{\ell}_m-t_{0.975,63}SE_m\right),
+\qquad
+U_m=\exp\left(\bar{\ell}_m+t_{0.975,63}SE_m\right),
+\qquad
+t_{0.975,63}=1.9983405425207417
+$$
+
+then reported on the improvement scale as
+
+$$
+CI^{95\%}_{I_m}=\left[100(1-U_m),\;100(1-L_m)\right]
+$$
+
+The acceptance test uses separate one-sided 95% bounds. With \(t_{0.95,63}=1.6694022217068127\), define
+
+$$
+U^{(1)}_C=\exp\left(\bar{\ell}_C+t_{0.95,63}SE_C\right),
+\qquad
+L^{(1)}_m=\exp\left(\bar{\ell}_m-t_{0.95,63}SE_m\right)
+$$
+
+The PPA gate accepts only if the composite upper one-sided bound is below parity and no primary metric is statistically established as a regression under the declared rule:
+
+$$
+U^{(1)}_C<1,
+\qquad
+L^{(1)}_m\leq 1\quad\text{for every }m\in\{A,D,P\}
+$$
+
+These statistical conditions are necessary but not sufficient: structural, functional, formal, route, power, evidence-integrity, and declared validity gates must also pass. Search-visible evidence and the fixed publication sample remain separate under the source case contracts.
+
+The complete common contract is published in [evaluation_contract.md](artifacts/evaluation_contract.md), and the case verifiers recompute the published statistics directly from the public paired values.
 
 ## 4. SHA-1 RTL — Boolean simplification
 
