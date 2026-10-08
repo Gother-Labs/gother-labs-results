@@ -445,7 +445,7 @@
       "slug": "iberian-bess-policy-challenge",
       "title": "Iberian BESS Policy Challenge",
       "domain": "Energy Optimization",
-      "status": "published",
+      "status": "archived",
       "published_at": "2026-06-23",
       "summary": "A deterministic BESS dispatch policy is challenged against frozen Iberian day-ahead scenarios, commercial baselines, and a perfect-foresight upper bound with explicit risk and constraint readouts.",
       "problem_statement": "Improve offline battery dispatch policy quality for OMIE day-ahead price scenarios without violating power, state-of-charge, efficiency, or terminal SOC constraints.",
